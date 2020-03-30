@@ -1,5 +1,5 @@
 const deleteReq = clickedId => {
-    fetch('del', {
+    fetch('producer', {
         method: 'delete',
         headers: {
             'Content-Type': 'application/json',
