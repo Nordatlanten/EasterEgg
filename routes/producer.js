@@ -37,13 +37,21 @@ producer
     .get((req, res) => {
         db.find().toArray((err, results) => {
             if (err) console.log(err)
-            res.render('./index.ejs', { candy: results })
+            res.render('./producer.ejs', { candy: results })
         })
     })
     .post((req, res) => {
+        
+        req.body.nuts ? req.body.nuts = 1 : req.body.nuts = 0
+        req.body.gelatine ? req.body.gelatine = 1 : req.body.gelatine = 0
+        req.body.gluten ? req.body.gluten = 1 : req.body.gluten = 0
+        req.body.natural ? req.body.natural = 1 : req.body.natural = 0
+      
         db.insertOne(req.body, (err, result) => {
+            console.log(req.body)
+          
             if (err) console.log(err)
-            console.log(`${req.body.candy} added.`)
+            console.log(`${req.body.name} added.`)
         })
         res.redirect('/producer')
     })

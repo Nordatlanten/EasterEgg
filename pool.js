@@ -17,3 +17,5 @@ let getConnection = function(callback) {
 }
 
 module.exports = getConnection
+
+

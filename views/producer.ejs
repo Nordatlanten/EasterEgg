@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      h2, ul, label {
+        font-family: Helvetica, sans-serif
+      }
+      
+    </style>
+  </head>
+  <body>
+    <h2>Välkommen till godisaffären</h2>
+
+    <ul class="candy">
+      <% for(let i=0; i < candy.length; i++) {%>
+      <li class="candy">
+        <span><%= candy[i].name %></span>
+        <span><%= candy[i].price %> öre</span>
+        <span><%= candy[i].producer %></span>
+        <!-- <span>Nötter? <%= candy[i].nuts %></span>
+        <span>Gelatin? <%= candy[i].gelatine %></span>
+        <span>Gluten? <%= candy[i].gluten %></span>
+        <span>Naturgodis? <%= candy[i].natural %></span> -->
+        <button id= <%= candy[i]._id %> onClick="deleteReq(this.id)" >Ta bort</button>
+      </li>
+      <% } %>
+    </ul>
+    <form action="/producer" method="POST">
+        <div>
+          <label for="name">Namn: </label>
+          <input type="text" id="name" name="name" required />
+        </div>
+     
+    
+      
+      <div>
+        <label for="price">Pris (öre): </label>
+        <input type="number" id="price" name="price" required />
+      </div>
+
+      <div>
+        <label for="producer">Leverantör: </label>
+        <input type="text" id="producer" name="producer" required />
+      </div>
+      
+      <div>
+        <label for="nuts">Nötter?</label>
+        <input type="checkbox" id="nuts" name="nuts" value="true" />   
+      </div>
+
+      <div>
+        <label for="gelatine">Gelatin?</label>
+        <input type="checkbox" id="gelatine" name="gelatine" value="true"  />   
+      </div>
+
+      <div>
+        <label for="gluten">Gluten?</label>
+        <input type="checkbox" id="gluten" name="gluten" value="true"  />   
+      </div>
+
+      <div>
+        <label for="nuts">Naturgodis?</label>
+        <input type="checkbox" id="natural" name="natural" value="true" />   
+      </div>
+      
+      <button type="submit">Lägg till godis</button>
+    </form>
+    <script src="./main.js"></script>
+  </body>
+</html>
