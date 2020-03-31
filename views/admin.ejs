@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      h1, ul, label {
+        font-family: Helvetica, sans-serif
+      }
+      
+    </style>
+  </head>
+  <body>
+    <h1>Administratörsidan</h2>
+
+    <ul class="producers">
+      <% for(let i=0; i < producers.length; i++) {%>
+      <li class="producers">
+        <span><%= producers[i].producer %></span>
+        <span><%= producers[i].description %></span>
+       
+        <button id= <%= producers[i]._id %> onClick="deleteReq(this.id)" >Ta bort</button>
+      </li>
+      <% } %>
+    </ul>
+
+    <h2>Lägg till leverantör:</h2>
+    <form action="/admin" method="POST">
+       
+      <div>
+        <label for="producer">Namn: </label>
+        <input type="text" id="producer" name="producer" required />
+      </div>
+
+      <button type="submit">Lägg till leverantör</button>
+    </form>
+    <script>
+      const deleteReq = clickedId => {
+    fetch('admin', {
+        method: 'delete',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: clickedId }),
+    })
+        .then(res => {
+            if (res.ok) return res.json()
+        })
+        .then(data => {
+            console.log(data)
+            window.location.reload(true)
+        })
+}
+
+    </script>
+  </body>
+</html>

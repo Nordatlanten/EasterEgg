@@ -1,6 +1,6 @@
 const express = require('express')
 
-const producer = express.Router()
+const admin = express.Router()
 const ObjectId = require('mongodb').ObjectID
 
 const { MongoClient } = require('mongodb')
@@ -18,37 +18,42 @@ client.connect(err => {
     db = client.db('candydb').collection('producers')
 })
 
+// Bara ett test för sql. Visar 3 leverantörer.
 
-producer
-    .route('/producer')
+admin.route('/sqltest').get((req, res) => {
+    let query = `SELECT * FROM Producers`
+
+    pool((err, connection) => {
+        connection.query(query, (err, result, fields) => {
+            connection.release()
+
+            if (err) throw err
+
+            res.send(result)
+        })
+    })
+})
+
+admin
+    .route('/admin')
     .get((req, res) => {
         db.find().toArray((err, results) => {
-            
             if (err) console.log(err)
-            //Denna renderar bara fram producent nr4
-            res.render('./producer.ejs', { p: results[3]})
+            console.log(results)
+            res.render('./admin.ejs', { producers: results })
         })
     })
     .post((req, res) => {
         
-        //Split-function för att lägga in varje ord i "additional"
-         console.log(req.body.additional = req.body.additional.split(' '))
-      
-         //Osäker på hur man ska göra en post in i "products" här...
         
-
-        // db.insertOne(req.body, (err, result) => {
-        //     console.log(req.body)
+        db.insertOne(req.body, (err, result) => {
+            
           
-        //     if (err) console.log(err)
-        //     console.log(`${req.body.name} added.`)
-        // })
-        res.redirect('/producer')
+            if (err) console.log(err)
+            console.log(`${req.body.producer} added.`)
+        })
+        res.redirect('/admin')
     })
-.put((req, res) => {
-
-})
-
     .delete((req, res) => {
         const { id } = req.body
         db.deleteOne({ _id: ObjectId(id) }, (err, result) => {
@@ -57,4 +62,4 @@ producer
         })
     })
 
-module.exports = producer
+module.exports = admin

@@ -3,71 +3,106 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Leverantörssidan</title>
     <style>
-      h2, ul, label {
+      h1, ul, label {
         font-family: Helvetica, sans-serif
       }
       
     </style>
   </head>
   <body>
-    <h2>Välkommen till godisaffären</h2>
+    <h1>Välkommen <%= p.producer %> ! Fyll på godis nedan:</h1>
 
-    <ul class="candy">
-      <% for(let i=0; i < candy.length; i++) {%>
-      <li class="candy">
-        <span><%= candy[i].name %></span>
-        <span><%= candy[i].price %> öre</span>
-        <span><%= candy[i].producer %></span>
-        <!-- <span>Nötter? <%= candy[i].nuts %></span>
-        <span>Gelatin? <%= candy[i].gelatine %></span>
-        <span>Gluten? <%= candy[i].gluten %></span>
-        <span>Naturgodis? <%= candy[i].natural %></span> -->
-        <button id= <%= candy[i]._id %> onClick="deleteReq(this.id)" >Ta bort</button>
-      </li>
-      <% } %>
-    </ul>
     <form action="/producer" method="POST">
+    
         <div>
           <label for="name">Namn: </label>
           <input type="text" id="name" name="name" required />
         </div>
      
-    
+     
+        <div>
+          <label for="type">Typ: </label>
+          <input type="text" id="type" name="type" required />
+        </div>
       
       <div>
-        <label for="price">Pris (öre): </label>
+        <label for="price">Pris (öre)/gram: </label>
         <input type="number" id="price" name="price" required />
       </div>
 
-      <div>
-        <label for="producer">Leverantör: </label>
-        <input type="text" id="producer" name="producer" required />
-      </div>
       
       <div>
-        <label for="nuts">Nötter?</label>
-        <input type="checkbox" id="nuts" name="nuts" value="true" />   
+        <label for="additional">Extra info: </label>
+        <textarea id="additional" name="additional" required> </textarea>
+      </div>
+    
+      <div>
+        <label for="stock">Antal i lager: </label>
+        <input type="number" id="stock" name="stock" required />
       </div>
 
-      <div>
-        <label for="gelatine">Gelatin?</label>
-        <input type="checkbox" id="gelatine" name="gelatine" value="true"  />   
-      </div>
-
-      <div>
-        <label for="gluten">Gluten?</label>
-        <input type="checkbox" id="gluten" name="gluten" value="true"  />   
-      </div>
-
-      <div>
-        <label for="nuts">Naturgodis?</label>
-        <input type="checkbox" id="natural" name="natural" value="true" />   
-      </div>
+    
       
       <button type="submit">Lägg till godis</button>
     </form>
-    <script src="./main.js"></script>
+
+    <h2>Här är dina varor:</h2>
+    
+    <ul class="p">
+      <% for(let i=0; i < p.products.length; i++) {%>
+      <li class="p">
+        <span><%= p.products[i].name %></span>
+        <!-- <span><%= p.products[i].price %> öre</span>
+        <span><%= p.products[i].type %></span>
+        <span><%= p.products[i].additional %></span> -->
+        <span>(<%= p.products[i].stock %> i lager)</span>
+        <button id= <%= p.products[i]._id %> onClick="deleteReq(this.id)" >Ta bort</button>
+
+        <!-- lyckades inte få detta att funka -->
+        <button id= <%= p.products[i]._id %> onClick="addAmount(prompt('Nytt saldo?'))" >Fyll på</button>
+      </li>
+      <% } %>
+    </ul>
+
+
+    <script>
+      const deleteReq = clickedId => {
+    fetch('producer', {
+        method: 'delete',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: clickedId }),
+    })
+        .then(res => {
+            if (res.ok) return res.json()
+        })
+        .then(data => {
+            console.log(data)
+            window.location.reload(true)
+        })
+}
+//lyckades inte få detta att funka..
+const addAmount = (newAmount) => {
+  fetch('producer', {
+    method: 'patch',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({stock: newAmount})
+
+  })
+  .then(res =>{
+    if (res.ok) return res.json()
+  } )
+  .then(data => {
+    console.log(data)
+    window.location.reload(true)
+  })
+}
+
+    </script>
   </body>
 </html>
