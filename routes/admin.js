@@ -44,11 +44,7 @@ admin
         })
     })
     .post((req, res) => {
-        
-        
         db.insertOne(req.body, (err, result) => {
-            
-          
             if (err) console.log(err)
             console.log(`${req.body.producer} added.`)
         })

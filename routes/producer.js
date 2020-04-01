@@ -18,36 +18,25 @@ client.connect(err => {
     db = client.db('candydb').collection('producers')
 })
 
-
 producer
     .route('/producer')
     .get((req, res) => {
         db.find().toArray((err, results) => {
-            
             if (err) console.log(err)
-            //Denna renderar bara fram producent nr4
-            res.render('./producer.ejs', { p: results[3]})
+            // Denna renderar bara fram producent nr4
+            res.render('./producer.ejs', { p: results[3] })
         })
     })
     .post((req, res) => {
-        
-        //Split-function för att lägga in varje ord i "additional"
-         console.log(req.body.additional = req.body.additional.split(' '))
-      
-         //Osäker på hur man ska göra en post in i "products" här...
-        
+        console.log(req.body)
+        let newProduct = req.body
+        console.log(newProduct)
 
-        // db.insertOne(req.body, (err, result) => {
-        //     console.log(req.body)
-          
-        //     if (err) console.log(err)
-        //     console.log(`${req.body.name} added.`)
-        // })
+        db.updateMany({ producer: 'Marabou' }, { $push: { products: req.body } })
+
         res.redirect('/producer')
     })
-.put((req, res) => {
-
-})
+    .put((req, res) => {})
 
     .delete((req, res) => {
         const { id } = req.body
