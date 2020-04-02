@@ -1,0 +1,20 @@
+* {
+  font-family: Arial, Helvetica, sans-serif
+}
+
+#newEggBox {
+  width: 400px;
+  height: 10vh;
+
+  display:flex;
+  text-align: center;
+  justify-content: space-around;
+}
+
+#newEggBox button {
+  display: inline-block;
+  height: 50%;
+}
+.blackBorder {
+  border: solid 2px;
+}
