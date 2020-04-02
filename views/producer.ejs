@@ -1,176 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
-        />
-        <title>Leverantörssidan</title>
-        <style>
-            h1,
-            ul,
-            label {
-                font-family: Helvetica, sans-serif
-            }
-        </style>
-    </head>
-    <body>
-        <h1>Välkommen <%= p.producer %> ! Fyll på godis nedan:</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leverantörssidan</title>
+    <style>
+      h1,
+      ul,
+      label {
+        font-family: Helvetica, sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Välkommen <%= p.producer %> ! Fyll på godis nedan:</h1>
 
-        <form
-            action="/producer"
-            method="POST"
-        >
-            <div>
-                <label for="name">Namn: </label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    required
-                />
-            </div>
+    <form action="/producer" method="POST">
+      <div>
+        <label for="name">Namn: </label>
+        <input type="text" id="name" name="name" required />
+      </div>
 
+      <div>
+        <div>Typ:</div>
+        Choklad:
+        <input type="checkbox" value="Choklad" name="type" />
+        Lakrits:
+        <input type="checkbox" value="Lakrits" name="type" />
 
-            
+        Vingummi:
+        <input type="checkbox" value="Vingummi" name="type" />
+      </div>
 
-            <div>
-              <div>Typ:</div>  
-              Choklad:
-              <input
-                  type="checkbox"
-                  value="Choklad"
-                  name="type"
-              >
-              Lakrits:
-              <input
-                  type="checkbox"
-                  value="Lakrits"
-                  name="type"
-              >
+      <div>
+        <label for="price">Pris (öre)/gram: </label>
+        <input type="number" id="price" name="price" required />
+      </div>
 
-              Vingummi:
-              <input
-                  type="checkbox"
-                  value="Vingummi"
-                  name="type"
-              >
-          </div>
+      <div>
+        <div>Extra info:</div>
+        Gelatin:
+        <input type="checkbox" value="Gelatin" name="additional" />
+        Nötter:
+        <input type="checkbox" value="Nötter" name="additional" />
 
+        Laktos:
+        <input type="checkbox" value="Laktos" name="additional" />
+      </div>
 
+      <div>
+        <label for="stock">Antal i lager: </label>
+        <input type="number" id="stock" name="stock" required />
+      </div>
 
-            <div>
-                <label for="price">Pris (öre)/gram: </label>
-                <input
-                    type="number"
-                    id="price"
-                    name="price"
-                    required
-                />
-            </div>
+      <button type="submit">Lägg till godis</button>
+    </form>
 
+    <h2>Här är dina varor:</h2>
 
-            <div>
-               <div>Extra info:</div> 
-                Gelatin:
-                <input
-                    type="checkbox"
-                    value="Gelatin"
-                    name="additional"
-                >
-                Nötter:
-                <input
-                    type="checkbox"
-                    value="Nötter"
-                    name="additional"
-                >
+    <ul class="p">
+      <% for(let i=0; i < p.products.length; i++) {%>
+      <li class="p">
+        <span><%= p.products[i].name %></span>
+        <span>(<%= p.products[i].additional %>)</span>
+        <span>(<%= p.products[i].stock %> i lager)</span>
 
-                Laktos:
-                <input
-                    type="checkbox"
-                    value="Laktos"
-                    name="additional"
-                >
-            </div>
+        <button id="<%= p.products[i].name%>" onclick="deleteReq(this.id)">
+          Ta bort
+        </button>
+      </li>
+      <% } %>
+    </ul>
 
-            <div>
-                <label for="stock">Antal i lager: </label>
-                <input
-                    type="number"
-                    id="stock"
-                    name="stock"
-                    required
-                />
-            </div>
+    <script>
+      const deleteReq = id => {
+        fetch("producer", {
+          method: "delete",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ id: id })
+        })
+          .then(res => {
+            if (res.ok) return res.json();
+          })
+          .then(data => {
+            window.location.reload(true);
+            console.log(data);
+          });
+      };
 
+      //lyckades inte få detta att funka..
+      const addAmount = newAmount => {
+        console.log(newAmount);
+        fetch("producer", {
+          method: "patch",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ stock: newAmount })
+        })
+          .then(res => {
+            if (res.ok) return res.json();
+          })
+          .then(data => {
+            console.log(data);
+          });
+      };
 
-
-            <button type="submit">Lägg till godis</button>
-        </form>
-
-        <h2>Här är dina varor:</h2>
-
-        <ul class="p">
-            <% for(let i=0; i < p.products.length; i++) {%>
-            <li class="p">
-                <span><%= p.products[i].name %></span>
-                <span>(<%= p.products[i].additional %>)</span>
-                <span>(<%= p.products[i].stock %> i lager)</span>
-
-                <button
-                    id="<%= p.products[i].name%>"
-                   
-                    onclick="deleteReq(this.id)"
-                >Ta bort</button>
-
-
-            </li>
-            <% } %>
-        </ul>
-
-
-        <script>
-            const deleteReq = id => {
-              
-                fetch('producer', {
-                        method: 'delete',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ id: id }),
-                    })
-                    .then(res => {
-                        if (res.ok) return res.json()
-                    })
-                    .then(data => {
-                        console.log(data)
-                        window.location.reload(true)
-                    })
-            }
-
-
-            //lyckades inte få detta att funka..
-            const addAmount = (newAmount) => {
-                console.log(newAmount)
-                fetch('producer', {
-                        method: 'patch',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ stock: newAmount })
-                    })
-                    .then(res => {
-                        if (res.ok) return res.json()
-                    })
-                    .then(data => {
-                        console.log(data)
-                    })
-            }
-
-            const testStock = (stockvalue) => {
-                console.log(stockvalue)
-            }
-        </script>
-    </body>
+      const testStock = stockvalue => {
+        console.log(stockvalue);
+      };
+    </script>
+  </body>
 </html>

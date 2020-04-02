@@ -28,32 +28,25 @@ producer
         })
     })
     .post((req, res) => {
-    
-        let newProduct = req.body
-        console.log(newProduct)
-
-        db.updateMany({ producer: 'Marabou' }, { $push: { products: req.body } })
-
-        res.redirect('/producer')
+        const newProduct = req.body
+        db.updateMany(
+            { producer: 'Marabou', 'products.name': { $ne: newProduct.name } },
+            { $push: { products: newProduct } },
+            (err, result) => {
+                if (err) console.log(err)
+                console.log(`${newProduct.name} added.`)
+                res.redirect('/producer')
+            }
+        )
     })
     .put((req, res) => {})
 
     .delete((req, res) => {
-
         const { id } = req.body
-      
-
-        db.updateMany({ producer: 'Marabou' }, { $pull: { 'products': { 'name': id } }
-    
-        
-    })
-
-        
-        
-        res.send({ message: id + 'bortplockad' })
-
-
-
+        db.updateMany({ producer: 'Marabou' }, { $pull: { products: { name: id } } }, (err, result) => {
+            if (err) return res.send(500, err)
+            res.send({ message: 'Godis bortplockad' })
+        })
     })
 
 module.exports = producer
