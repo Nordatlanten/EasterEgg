@@ -29,9 +29,17 @@ producer
     })
     .post((req, res) => {
         const newProduct = req.body
+        const insertProduct = {
+            name: newProduct.name,
+            type: newProduct.type,
+            price: parseInt(newProduct.price),
+            additional: newProduct.additional,
+            stock: parseInt(newProduct.stock),
+        }
+
         db.updateMany(
             { producer: 'Marabou', 'products.name': { $ne: newProduct.name } },
-            { $push: { products: newProduct } },
+            { $push: { products: insertProduct } },
             (err, result) => {
                 if (err) console.log(err)
                 console.log(`${newProduct.name} added.`)
@@ -39,7 +47,20 @@ producer
             }
         )
     })
-    .put((req, res) => {})
+    .put((req, res) => {
+        const { product } = req.body
+        const increaseNumber = parseInt(req.body.stock)
+
+        db.updateMany(
+            { producer: 'Marabou', 'products.name': product },
+            { $inc: { 'products.$.stock': increaseNumber } },
+            (err, result) => {
+                if (err) console.log(err)
+                res.send({ message: 'Lagret uppdaterat' })
+                console.log(`${increaseNumber} added to ${product}.`)
+            }
+        )
+    })
 
     .delete((req, res) => {
         const { id } = req.body
