@@ -28,7 +28,7 @@ producer
         })
     })
     .post((req, res) => {
-        console.log(req.body)
+    
         let newProduct = req.body
         console.log(newProduct)
 
@@ -39,11 +39,21 @@ producer
     .put((req, res) => {})
 
     .delete((req, res) => {
+
         const { id } = req.body
-        db.deleteOne({ _id: ObjectId(id) }, (err, result) => {
-            if (err) return res.send(500, err)
-            res.send({ message: 'Godis bortplockad' })
-        })
+      
+
+        db.updateMany({ producer: 'Marabou' }, { $pull: { 'products': { 'name': id } }
+    
+        
+    })
+
+        
+        
+        res.send({ message: id + 'bortplockad' })
+
+
+
     })
 
 module.exports = producer
