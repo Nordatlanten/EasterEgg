@@ -63,55 +63,16 @@
       <li class="p">
         <span><%= p.products[i].name %></span>
         <span>(<%= p.products[i].additional %>)</span>
-        <span>(<%= p.products[i].stock %> i lager)</span>
+        <span>(<%= p.products[i].stock %>g i lager)</span>
 
-        <button id="<%= p.products[i].name%>" onclick="deleteReq(this.id)">Ta bort</button>
+        <button onclick="deleteProduct('<%= p.products[i].name%>')">Ta bort</button>
           <input type="number" name="<%= p.products[i].name%>" required />
-          <button id="<%= p.products[i].name%>" onclick="refill(this.id)">Fyll på</button>
+          <button onclick="refillProduct('<%= p.products[i].name%>')">Fyll på</button>
         </button>
       </li>
       <% } %>
     </ul>
 
-    <script>
-      const deleteReq = id => {
-        fetch("producer", {
-          method: "delete",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ id: id })
-        })
-          .then(res => {
-            if (res.ok) return res.json()
-          })
-          .then(data => {
-            window.location.reload(true)
-            console.log(data)
-          })
-      }
-
-
-      const refill = name => {
-        let amount = document.getElementsByName(name)[0].value
-        if(amount == '') {
-          alert('Fyll i ett värde!')
-        } else {
-        fetch("producer", {
-          method: "put",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ stock: amount, product: name })
-        })
-          .then(res => {
-            if (res.ok) return res.json();
-          })
-          .then(data => {
-            window.location.reload(true)
-          })
-        }
-      }
-    </script>
+    <script src='./main.js'> </script>
   </body>
 </html>

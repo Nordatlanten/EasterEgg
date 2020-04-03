@@ -20,7 +20,7 @@
         <span><%= producers[i].producer %></span>
         <span><%= producers[i].description %></span>
        
-        <button id= <%= producers[i]._id %> onClick="deleteReq(this.id)" >Ta bort</button>
+        <button onClick="deleteProducer('<%= producers[i]._id %>')" >Ta bort</button>
       </li>
       <% } %>
     </ul>
@@ -32,27 +32,14 @@
         <label for="producer">Namn: </label>
         <input type="text" id="producer" name="producer" required />
       </div>
+      <div>
+        <label for="producer">Beskrivning: </label>
+        <input type="text" id="description" name="description" required />
+      </div>
 
       <button type="submit">Lägg till leverantör</button>
     </form>
-    <script>
-      const deleteReq = clickedId => {
-    fetch('admin', {
-        method: 'delete',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ id: clickedId }),
-    })
-        .then(res => {
-            if (res.ok) return res.json()
-        })
-        .then(data => {
-            console.log(data)
-            window.location.reload(true)
-        })
-}
 
-    </script>
+    <script src='./main.js'> </script>
   </body>
 </html>
