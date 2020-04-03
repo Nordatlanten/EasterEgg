@@ -63,8 +63,8 @@ producer
     })
 
     .delete((req, res) => {
-        const { id } = req.body
-        db.updateMany({ producer: 'Marabou' }, { $pull: { products: { name: id } } }, (err, result) => {
+        const { name } = req.body
+        db.updateMany({ producer: 'Marabou' }, { $pull: { products: { name } } }, (err, result) => {
             if (err) return res.send(500, err)
             res.send({ message: 'Godis bortplockad' })
         })
