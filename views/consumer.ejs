@@ -1,18 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Godisbutiken</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div id="newEggBox" class="blackBorder">
-    <button class="blueButton">Nytt ägg</button>
-    <button class="whiteButton">Köplistor</button>
-  </div>
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <title>Godisbutiken</title>
+        <link
+            rel="stylesheet"
+            href="style.css"
+        >
+    </head>
+    <body>
+        <div id="mainBox">
+            <div id="upperRow">
+                <div
+                    id="newEggBox"
+                    class="blackBorder"
+                >
+                    <button class="blueButton">Nytt ägg</button>
+                    <button class="whiteButton">Köplistor</button>
+                </div>
+                <div>
+                    <h1>Välkommen till Godisbutiken! </h1>
+                </div>
+            </div>
 
 
-  <div><h1>Välkommen till Godisbutiken! </h1></div>
-</body>
+            <div id="mainRow">
+                <div id="candyList">
+                    <h2>Godissorter</h2>
+                    <div id="candyFilterBox">
+                        <button class="whiteButton">
+                            Filtrera efter
+                        </button>
+                        <button class="whiteButton">
+                            Sök
+                        </button>
+                    </div>
+
+                    <div id="sortingRow">
+                        <span class="sorting">Sortera efter namn</span>
+                        <span class="sorting">Sortera efter pris</span>
+                    </div>
+
+                    <div id="headlines">
+                        <span>Sort</span>
+                        <span>Pris</span>
+                        <span>Antal</span>
+                        <button class="whiteButton">Uppdatera</button>
+                    </div>
+
+                    <div id="candies">
+                        <% for(let i=0; i < c[0].products.length; i++) {%>
+                        <div class="candyItems">
+                            <span class="nameBox"><%= c[0].products[i].name %></span>
+                            <span><%= c[0].products[i].price %></span>
+                            <span>antal: </span>
+
+                            <button class="greenButton">Lägg till</button>
+                        </div>
+
+
+                        <% } %>
+                    </div>
+
+                </div>
+
+
+                <div id="eggWindow">
+                    <h2>*äggnamn*</h2>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>

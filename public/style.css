@@ -2,19 +2,101 @@
   font-family: Arial, Helvetica, sans-serif
 }
 
+#mainBox {
+  display: flex;
+  flex-direction: column;
+}
+
+#mainBox h1 {
+  font-size: 1.8em;
+}
+
+#upperRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 5vh 0;
+  
+}
+
 #newEggBox {
-  width: 400px;
+  width: 25vw;
   height: 10vh;
 
   display:flex;
   text-align: center;
   justify-content: space-around;
+  align-items:center;
 }
 
 #newEggBox button {
-  display: inline-block;
-  height: 50%;
+  height: 40%;
 }
+
+#mainRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+#mainRow > div {
+  border: solid 2px;
+  width: 40vw;
+}
+
+#mainRow h2 {
+  text-align: center;
+}
+
+#candyFilterBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+
+.candyItems {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.candyItems span:first-child {
+  flex-grow: 1;
+}
+
+.candyItems span:nth-child(2) {
+  flex-shrink: 1;
+}
+
+
+#sortingRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly
+}
+
+.sorting {
+  text-decoration: underline;
+}
+
+#headlines {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly
+}
+
 .blackBorder {
   border: solid 2px;
+}
+
+.blueButton {
+  background-color: cyan;
+}
+
+.greenButton {
+  background-color: lime;
+}
+
+.whiteButton {
+  background-color: seashell;
 }
