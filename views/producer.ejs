@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="../style.css">
   </head>
   <body>
-    <h1>Välkommen <span id="producername"><%= p.producer %></span> ! Fyll på godis nedan:</h1>
+    <h1>Välkommen <%= p.producer %>! Fyll på godis nedan:</h1>
 
     <form action="/producer/<%= p.producer %>" method="POST">
       <div>
@@ -59,9 +59,9 @@
         <span>(<%= p.products[i].additional %>)</span>
         <span>(<%= p.products[i].stock %>g i lager)</span>
 
-        <button onclick="deleteProduct('<%= p.products[i].name%>')">Ta bort</button>
+        <button onclick="deleteProduct('<%= p.products[i].name%>', '<%= p.producer%>')">Ta bort</button>
           <input type="number" name="<%= p.products[i].name%>" required />
-          <button onclick="refillProduct('<%= p.products[i].name%>')">Fyll på</button>
+          <button onclick="refillProduct('<%= p.products[i].name%>', '<%= p.producer%>')">Fyll på</button>
         </button>
       </li>
       <% } %>
