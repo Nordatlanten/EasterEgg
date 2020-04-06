@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Godisbutiken</title>
     <link rel="stylesheet" href="../style.css" />
+
   </head>
   <body>
     <div id="mainBox">
@@ -31,29 +32,38 @@
           </div>
 
           <div id="sortingRow">
-            <span class="sorting">Sortera efter namn</span>
-            <span class="sorting">Sortera efter pris</span>
+            <span>Sortera efter:</span>
+            <span class="sorting">namn</span>
+            <span class="sorting">pris</span>
           </div>
 
-          <div id="headlines">
-            <span>Sort</span>
-            <span>Pris</span>
-            <span>Antal</span>
-            <button class="whiteButton">Uppdatera</button>
-          </div>
-
+    
           <div id="candies">
+            
+            <div id="headlines">
+              <span>Sort</span>
+              <span>Pris</span>
+              <span>Antal</span>
+              <span><button class="whiteButton">Lägg till</button></span>
+            </div>
+  
             <% for(let i=0; i < c[0].products.length; i++) {%>
             <div class="candyItems">
               <span class="nameBox"><%= c[0].products[i].name %></span>
               <span><%= c[0].products[i].price %></span>
-              <span>antal: </span>
+              <span><input id="<%=c[0].products[i].name%>" type="number" min="0" style="width: 100%"> </span>
 
-              <button class="greenButton">Lägg till</button>
+              <span><button onclick="pushToList('<%= c[0].products[i].name%>', document.getElementById('<%=c[0].products[i].name%>').value)" class="greenButton">Lägg till</button></span>
             </div>
 
             <% } %>
           </div>
+
+          <div id="resultWindow">
+            <span>Totalt pris: </span>
+            <span><button onclick="addToEgg()"  class="greenButton">Skapa ägg </button></span>
+          </div>
+
         </div>
 
         <div id="eggWindow">
@@ -61,5 +71,9 @@
         </div>
       </div>
     </div>
+
+
+
+    <script src='../main.js'> </script>
   </body>
 </html>

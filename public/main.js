@@ -57,3 +57,34 @@ const refillProduct = clickedName => {
             })
     }
 }
+
+let candyList = []
+let egg = {}
+
+
+const pushToList = (name, amount) => {
+
+
+    candyList.push({
+        name: name
+    })
+
+    for (let i = 0; i < candyList.length; i++) {
+        if (candyList[i].name == name) {
+            candyList[i].amount = amount
+        }        
+    }
+    console.log(candyList)
+}
+
+const addToEgg = () => {
+    
+    let newList = candyList.filter((item, index) => {
+        
+        console.log(item.name)
+        
+        candyList.indexOf(item) == index
+    })
+    console.log(newList)
+}
+
