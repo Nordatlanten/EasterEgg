@@ -4,12 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Leverantörssidan</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
   </head>
   <body>
-    <h1>Välkommen <%= p.producer %> ! Fyll på godis nedan:</h1>
+    <h1>Välkommen <span id="producername"><%= p.producer %></span> ! Fyll på godis nedan:</h1>
 
-    <form action="/producer" method="POST">
+    <form action="/producer/<%= p.producer %>" method="POST">
       <div>
         <label for="name">Namn: </label>
         <input type="text" id="name" name="name" required />
@@ -67,6 +67,6 @@
       <% } %>
     </ul>
 
-    <script src='./main.js'> </script>
+    <script src='../main.js'> </script>
   </body>
 </html>
