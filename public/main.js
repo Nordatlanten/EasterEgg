@@ -17,14 +17,13 @@ const deleteProducer = clickedId => {
         })
 }
 
-const deleteProduct = clickedProduct => {
-    const producerName = document.getElementById('producername').innerText
+const deleteProduct = (clickedProduct, currentProducer) => {
     fetch('/producer', {
         method: 'delete',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name: clickedProduct, producerName }),
+        body: JSON.stringify({ clickedProduct, currentProducer }),
     })
         .then(res => {
             if (res.ok) return res.json()
@@ -35,10 +34,9 @@ const deleteProduct = clickedProduct => {
         })
 }
 
-const refillProduct = clickedName => {
-    const amount = document.getElementsByName(clickedName)[0].value
-    const producerName = document.getElementById('producername').innerText
-    if (amount == '') {
+const refillProduct = (clickedProduct, currentProducer) => {
+    const amountToRefill = document.getElementsByName(clickedProduct)[0].value
+    if (amountToRefill == '') {
         alert('Fyll i ett värde!')
     } else {
         fetch('/producer', {
@@ -46,7 +44,7 @@ const refillProduct = clickedName => {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ stock: amount, product: clickedName, producerName }),
+            body: JSON.stringify({ amountToRefill, clickedProduct, currentProducer }),
         })
             .then(res => {
                 if (res.ok) return res.json()

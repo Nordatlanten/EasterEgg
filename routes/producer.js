@@ -50,25 +50,29 @@ producer
 producer
     .route('/producer')
     .delete((req, res) => {
-        const { name } = req.body
-        const { producerName } = req.body
-        db.updateMany({ producer: producerName }, { $pull: { products: { name } } }, (err, result) => {
-            if (err) return res.send(500, err)
-            res.send({ message: 'Godis bortplockad' })
-        })
+        const { currentProducer } = req.body
+        const { clickedProduct } = req.body
+        db.updateMany(
+            { producer: currentProducer },
+            { $pull: { products: { name: clickedProduct } } },
+            (err, result) => {
+                if (err) return res.send(500, err)
+                res.send({ message: 'Godis bortplockad' })
+            }
+        )
     })
     .put((req, res) => {
-        const { product } = req.body
-        const increaseNumber = parseInt(req.body.stock)
-        const { producerName } = req.body
+        const { clickedProduct } = req.body
+        const amountToRefill = parseInt(req.body.amountToRefill)
+        const { currentProducer } = req.body
 
         db.updateMany(
-            { producer: producerName, 'products.name': product },
-            { $inc: { 'products.$.stock': increaseNumber } },
+            { producer: currentProducer, 'products.name': clickedProduct },
+            { $inc: { 'products.$.stock': amountToRefill } },
             (err, result) => {
                 if (err) console.log(err)
                 res.send({ message: 'Lagret uppdaterat' })
-                console.log(`${increaseNumber} added to ${product}.`)
+                console.log(`${amountToRefill} added to ${clickedProduct}.`)
             }
         )
     })
