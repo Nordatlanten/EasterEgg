@@ -18,18 +18,7 @@ client.connect(err => {
 })
 
 consumer.route('/consumer').get((req, res) => {
-    db.aggregate([
-        {
-            $unwind: '$products',
-        },
-        {
-            $group: {
-                _id: null,
-                products: { $push: '$products' },
-            },
-        },
-        { $project: { _id: 0 } },
-    ]).toArray((err, results) => {
+    db.aggregate([{ $unwind: '$products' }]).toArray((err, results) => {
         if (err) console.log(err)
 
         res.render('./consumer.ejs', { c: results })

@@ -77,4 +77,20 @@ producer
         )
     })
 
+producer.route('/producerstock').put((req, res) => {
+    const { clickedProduct } = req.body
+    const amountToDecrease = parseInt(req.body.amountToDecrease)
+    const { currentProducer } = req.body
+
+    db.updateMany(
+        { producer: currentProducer, 'products.name': clickedProduct },
+        { $inc: { 'products.$.stock': -amountToDecrease } },
+        (err, result) => {
+            if (err) console.log(err)
+            res.send({ message: 'Lagret uppdaterat' })
+            console.log(`${amountToDecrease} removed from ${clickedProduct}.`)
+        }
+    )
+})
+
 module.exports = producer

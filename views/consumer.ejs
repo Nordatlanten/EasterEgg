@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Godisbutiken</title>
     <link rel="stylesheet" href="../style.css" />
-
   </head>
   <body>
     <div id="mainBox">
@@ -37,23 +36,35 @@
             <span class="sorting">pris</span>
           </div>
 
-    
           <div id="candies">
-            
             <div id="headlines">
               <span>Sort</span>
               <span>Pris</span>
               <span>Antal</span>
-              <span><button class="whiteButton">Lägg till</button></span>
+              <span>Lager</span>
             </div>
-  
-            <% for(let i=0; i < c[0].products.length; i++) {%>
-            <div class="candyItems">
-              <span class="nameBox"><%= c[0].products[i].name %></span>
-              <span><%= c[0].products[i].price %></span>
-              <span><input id="<%=c[0].products[i].name%>" type="number" min="0" style="width: 100%"> </span>
 
-              <span><button onclick="pushToList('<%= c[0].products[i].name%>', document.getElementById('<%=c[0].products[i].name%>').value)" class="greenButton">Lägg till</button></span>
+            <% for(let i=0; i < c.length; i++) {%>
+            <div class="candyItems">
+              <span class="nameBox"><%= c[i].products.name %></span>
+              <span><%= c[i].products.price %></span>
+              <span
+                ><input
+                  id="<%=c[i].products.name%>"
+                  type="number"
+                  min="0"
+                  style="width: 100%;"
+                />
+              </span>
+              <span
+                ><button
+                  onclick="decreaseStock('<%= c[i].products.name%>', document.getElementById('<%=c[i].products.name%>').value, '<%= c[i].producer %>')"
+                  class="greenButton"
+                >
+                  Lägg till
+                </button></span
+              >
+              <span><%= c[i].products.stock %></span>
             </div>
 
             <% } %>
@@ -61,9 +72,12 @@
 
           <div id="resultWindow">
             <span>Totalt pris: </span>
-            <span><button onclick="addToEgg()"  class="greenButton">Skapa ägg </button></span>
+            <span
+              ><button onclick="addToEgg()" class="greenButton">
+                Skapa ägg
+              </button></span
+            >
           </div>
-
         </div>
 
         <div id="eggWindow">
@@ -72,8 +86,6 @@
       </div>
     </div>
 
-
-
-    <script src='../main.js'> </script>
+    <script src="../main.js"></script>
   </body>
 </html>

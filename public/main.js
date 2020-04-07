@@ -59,30 +59,51 @@ const refillProduct = (clickedProduct, currentProducer) => {
 let candyList = []
 let egg = {}
 
-
-const pushToList = (name, amount) => {
-
-
-    candyList.push({
-        name: name
-    })
-
+const pushToList = (name, amount, producer) => {
+    const addAmount = parseInt(amount)
     for (let i = 0; i < candyList.length; i++) {
         if (candyList[i].name == name) {
-            candyList[i].amount = amount
-        }        
+            candyList[i].amount += addAmount
+            console.log(candyList)
+            return candyList
+        }
     }
+
+    candyList.push({
+        name,
+        amount: addAmount,
+        producer,
+    })
+
     console.log(candyList)
 }
 
+const decreaseStock = (clickedProduct, amountToDecrease, currentProducer) => {
+    if (amountToDecrease == '') {
+        alert('Fyll i ett värde!')
+    } else {
+        fetch('/producerstock', {
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ clickedProduct, amountToDecrease, currentProducer }),
+        })
+            .then(res => {
+                if (res.ok) return res.json()
+            })
+            .then(data => {
+                console.log(data)
+            })
+        pushToList(clickedProduct, amountToDecrease, currentProducer)
+    }
+}
+
 const addToEgg = () => {
-    
     let newList = candyList.filter((item, index) => {
-        
         console.log(item.name)
-        
+
         candyList.indexOf(item) == index
     })
     console.log(newList)
 }
-
