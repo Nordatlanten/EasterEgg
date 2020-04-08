@@ -18,7 +18,6 @@ client.connect(err => {
     db = client.db('candydb').collection('producers')
 })
 
-
 producer
     .route('/producer/:producer')
     .get((req, res) => {

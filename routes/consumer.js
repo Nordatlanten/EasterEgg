@@ -17,8 +17,8 @@ client.connect(err => {
     db = client.db('candydb').collection('producers')
 })
 
-
-consumer.route('/eggs')
+consumer
+    .route('/eggs')
     .get((req, res) => {
         let query = `SELECT * FROM eggs`
 
@@ -47,7 +47,8 @@ consumer.route('/eggs')
         })
     })
 
-consumer.route('/addedCandy')
+consumer
+    .route('/addedCandy')
     .get((req, res) => {
         let query = `SELECT * FROM addedCandy`
 
@@ -76,20 +77,32 @@ consumer.route('/addedCandy')
         })
     })
 
-
-
 consumer.route('/consumer').get((req, res) => {
     db.aggregate([{ $unwind: '$products' }]).toArray((err, results) => {
         if (err) console.log(err)
 
-        let query = `SELECT * FROM Producers`
+        let query = `SELECT * FROM addedCandy`
 
         pool((err, connection) => {
             connection.query(query, (err, result, fields) => {
                 connection.release()
-
                 if (err) throw err
-                res.render('./consumer.ejs', { c: results, d: result })
+                const egg = {}
+                for (let n = 0; n < result.length; n++) {
+                    if (egg[result[n].eggName] === undefined) {
+                        egg[result[n].eggName] = 1
+                        const test = []
+                        egg[result[n].eggName] = test
+                        n--
+                    } else {
+                        egg[result[n].eggName].push({
+                            name: result[n].name,
+                            amount: result[n].amount,
+                            price: result[n].price,
+                        })
+                    }
+                }
+                res.render('./consumer.ejs', { c: results, d: egg })
             })
         })
     })
