@@ -59,8 +59,29 @@ const refillProduct = (clickedProduct, currentProducer) => {
 let candyList = []
 let egg = {}
 
-const pushToList = (name, amount, producer) => {
+function eggDisplay(array) {
+    let list = document.getElementById('egglist')
+
+    let index = array.length - 1
+
+    let item = document.createElement('li')
+    item.appendChild(document.createTextNode(`${array[index].name} ${array[index].amount} gram`))
+    list.appendChild(item)
+
+    return list
+}
+
+function calculatePrice(array) {
+    let total = 0
+    for (let i = 0; i < array.length; i++) {
+        total += array[i].price * array[i].amount
+    }
+    return total
+}
+
+const pushToList = (name, amount, producer, price) => {
     const addAmount = parseInt(amount)
+    const addPrice = parseInt(price)
     for (let i = 0; i < candyList.length; i++) {
         if (candyList[i].name == name) {
             candyList[i].amount += addAmount
@@ -73,12 +94,15 @@ const pushToList = (name, amount, producer) => {
         name,
         amount: addAmount,
         producer,
+        price: addPrice,
     })
 
     console.log(candyList)
+    document.getElementById('eggWindow').appendChild(eggDisplay(candyList))
+    document.getElementById('price').innerHTML = `${calculatePrice(candyList)} öre (lol)`
 }
 
-const decreaseStock = (clickedProduct, amountToDecrease, currentProducer) => {
+const decreaseStock = (clickedProduct, amountToDecrease, currentProducer, price) => {
     if (amountToDecrease == '') {
         alert('Fyll i ett värde!')
     } else {
@@ -95,7 +119,7 @@ const decreaseStock = (clickedProduct, amountToDecrease, currentProducer) => {
             .then(data => {
                 console.log(data)
             })
-        pushToList(clickedProduct, amountToDecrease, currentProducer)
+        pushToList(clickedProduct, amountToDecrease, currentProducer, price)
     }
 }
 

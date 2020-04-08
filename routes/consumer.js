@@ -21,7 +21,16 @@ consumer.route('/consumer').get((req, res) => {
     db.aggregate([{ $unwind: '$products' }]).toArray((err, results) => {
         if (err) console.log(err)
 
-        res.render('./consumer.ejs', { c: results })
+        let query = `SELECT * FROM Producers`
+
+        pool((err, connection) => {
+            connection.query(query, (err, result, fields) => {
+                connection.release()
+
+                if (err) throw err
+                res.render('./consumer.ejs', { c: results, d: result })
+            })
+        })
     })
 })
 

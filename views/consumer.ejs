@@ -10,8 +10,7 @@
     <div id="mainBox">
       <div id="upperRow">
         <div id="newEggBox" class="blackBorder">
-          <button class="blueButton">Nytt ägg</button>
-          <button class="whiteButton">Köplistor</button>
+          <h2>Dina sparade ägg:</h2>
         </div>
         <div>
           <h1>Välkommen till Godisbutiken!</h1>
@@ -20,7 +19,6 @@
 
       <div id="mainRow">
         <div id="candyList">
-          <h2>Godissorter</h2>
           <div id="candyFilterBox">
             <button class="whiteButton">
               Filtrera efter
@@ -29,7 +27,8 @@
               Sök
             </button>
           </div>
-
+          <h2>Äggnamn:</h2>
+          <input type="text" id="eggname" />
           <div id="sortingRow">
             <span>Sortera efter:</span>
             <span class="sorting">namn</span>
@@ -58,30 +57,27 @@
               </span>
               <span
                 ><button
-                  onclick="decreaseStock('<%= c[i].products.name%>', document.getElementById('<%=c[i].products.name%>').value, '<%= c[i].producer %>')"
+                  onclick="decreaseStock('<%= c[i].products.name%>', document.getElementById('<%=c[i].products.name%>').value, '<%= c[i].producer %>', '<%= c[i].products.price %>')"
                   class="greenButton"
                 >
                   Lägg till
                 </button></span
               >
               <span><%= c[i].products.stock %></span>
+              <!-- <span><%= d[0].name %></span> -->
             </div>
 
             <% } %>
           </div>
-
-          <div id="resultWindow">
-            <span>Totalt pris: </span>
-            <span
-              ><button onclick="addToEgg()" class="greenButton">
-                Skapa ägg
-              </button></span
-            >
-          </div>
         </div>
 
         <div id="eggWindow">
-          <h2>*äggnamn*</h2>
+          <h2>Ditt ägg:</h2>
+          <ul id="egglist"></ul>
+          <p>Totalt pris: <span id="price"></span></p>
+          <button onclick="addToEgg()" class="greenButton">
+            Spara ägg
+          </button>
         </div>
       </div>
     </div>
