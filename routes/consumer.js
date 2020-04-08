@@ -17,6 +17,67 @@ client.connect(err => {
     db = client.db('candydb').collection('producers')
 })
 
+
+consumer.route('/eggs')
+    .get((req, res) => {
+        let query = `SELECT * FROM eggs`
+
+        pool((err, connection) => {
+            connection.query(query, (err, result, fields) => {
+                connection.release()
+
+                if (err) throw err
+
+                res.send(result)
+            })
+        })
+    })
+    .post((req, res) => {
+        let query = `INSERT INTO eggs (name) VALUES (?)`
+        let values = [req.body.eggName]
+        console.log(req.body.eggName)
+        pool((err, connection) => {
+            connection.query(query, values, (err, result, fields) => {
+                connection.release()
+
+                if (err) throw err
+
+                res.send(result)
+            })
+        })
+    })
+
+consumer.route('/addedCandy')
+    .get((req, res) => {
+        let query = `SELECT * FROM addedCandy`
+
+        pool((err, connection) => {
+            connection.query(query, (err, result, fields) => {
+                connection.release()
+
+                if (err) throw err
+
+                res.send(result)
+            })
+        })
+    })
+    .post((req, res) => {
+        let query = `INSERT INTO addedCandy (eggName, name, amount, price) VALUES (?, ?, ?, ?)`
+        let values = [req.body.eggName, req.body.name, req.body.amount, req.body.price]
+        console.log(values)
+        pool((err, connection) => {
+            connection.query(query, values, (err, result, fields) => {
+                connection.release()
+
+                if (err) throw err
+
+                res.send(result)
+            })
+        })
+    })
+
+
+
 consumer.route('/consumer').get((req, res) => {
     db.aggregate([{ $unwind: '$products' }]).toArray((err, results) => {
         if (err) console.log(err)

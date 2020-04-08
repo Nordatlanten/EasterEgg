@@ -2,7 +2,7 @@ const mysql = require('mysql')
 const pw = require('./pw.js')
 
 let pool = mysql.createPool({
-    connectionLimit: 5,
+    connectionLimit: 10,
     host: 'remotemysql.com',
     port: '3306',
     user: pw.user,

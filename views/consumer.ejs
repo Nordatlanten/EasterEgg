@@ -28,7 +28,7 @@
             </button>
           </div>
           <h2>Äggnamn:</h2>
-          <input type="text" id="eggname" />
+          <input type="text" id="eggname" placeholder="Skriv äggnamn här..." />
           <div id="sortingRow">
             <span>Sortera efter:</span>
             <span class="sorting">namn</span>
@@ -72,10 +72,10 @@
         </div>
 
         <div id="eggWindow">
-          <h2>Ditt ägg:</h2>
+          <h2>Ditt ägg: <span id="nameOfEgg"></span></h2>
           <ul id="egglist"></ul>
           <p>Totalt pris: <span id="price"></span></p>
-          <button onclick="addToEgg()" class="greenButton">
+          <button onclick="postEgg()" class="greenButton">
             Spara ägg
           </button>
         </div>
