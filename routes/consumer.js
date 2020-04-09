@@ -1,5 +1,6 @@
 const express = require('express')
 const pool = require('../pool.js')
+const async = require('async')
 
 const consumer = express.Router()
 
@@ -61,17 +62,25 @@ consumer.route('/addedCandy')
             })
         })
     })
+
+
     .post((req, res) => {
+        let eggName = req.body.name
+        let candyList = req.body.candyList
+
         let query = `INSERT INTO addedCandy (eggName, name, amount, price) VALUES (?, ?, ?, ?)`
-        let values = [req.body.eggName, req.body.name, req.body.amount, req.body.price]
-        console.log(values)
+
+        
+
         pool((err, connection) => {
-            connection.query(query, values, (err, result, fields) => {
-                connection.release()
+            async.forEachOf(candyList, function(candy, i, inner_callback) {
+                let values = [eggName, candy.name, candy.amount, candy.price]
 
-                if (err) throw err
-
-                res.send(result)
+                connection.query(query, values, (err, result, fields) => {
+                    connection.release()
+                    if (err) throw err
+                    res.send(result)
+                })
             })
         })
     })
