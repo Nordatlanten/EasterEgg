@@ -77,14 +77,15 @@ consumer
         })
     })
 
-consumer.route('/consumer').get((req, res) => {
+consumer.route('/consumer/:userid').get((req, res) => {
     db.aggregate([{ $unwind: '$products' }]).toArray((err, results) => {
         if (err) console.log(err)
 
-        let query = `SELECT * FROM addedCandy`
+        let query = `SELECT * FROM addedCandy WHERE userid = ?`
+        const { userid } = req.params
 
         pool((err, connection) => {
-            connection.query(query, (err, result, fields) => {
+            connection.query(query, userid, (err, result, fields) => {
                 connection.release()
                 if (err) throw err
                 const egg = {}
