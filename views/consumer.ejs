@@ -79,10 +79,16 @@
         <div id="newEggBox" class="blackBorder">
           <h2>Dina sparade ägg:</h2>
           <% let eggNames = Object.keys(d) %>
+          <% if(d[eggNames[0]] != undefined){ %>
+            Inloggad som: <%= e %>
+        <% } else{ %>  
+            <p><%= e %> är inte skapad ännu</p>
+        <% } %>
+
           <% for(let i=0; i < eggNames.length; i++) {%>
             <h3><%= eggNames[i] %></h3>
             <% for(let n=0; n < d[eggNames[i]].length; n++) {%>
-                <p><%= d[eggNames[i]][n].name %>, <%= d[eggNames[i]][n].amount %>g</p>
+                <p><%= d[eggNames[i]][n].name %>, <%= d[eggNames[i]][n].amount %>g </p>
               <% } %>
             <% } %>
           </div>

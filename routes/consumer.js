@@ -112,7 +112,7 @@ consumer.route('/consumer/:userid').get((req, res) => {
                         })
                     }
                 }
-                res.render('./consumer.ejs', { c: results, d: egg })
+                res.render('./consumer.ejs', { c: results, d: egg, e: userid })
             })
         })
     })
