@@ -9,8 +9,6 @@
   <body>
     <div id="mainBox">
       <div id="upperRow">
-        <div id="newEggBox" class="blackBorder">
-          <h2>Dina sparade ägg:</h2>
         </div>
         <div>
           <h1>Välkommen till Godisbutiken!</h1>
@@ -64,7 +62,6 @@
                 </button></span
               >
               <span><%= c[i].products.stock %></span>
-              <!-- <span><%= d[0].name %></span> -->
             </div>
 
             <% } %>
@@ -79,7 +76,18 @@
             Spara ägg
           </button>
         </div>
+        <div id="newEggBox" class="blackBorder">
+          <h2>Dina sparade ägg:</h2>
+          <% let eggNames = Object.keys(d) %>
+          <% for(let i=0; i < eggNames.length; i++) {%>
+            <h3><%= eggNames[i] %></h3>
+            <% for(let n=0; n < d[eggNames[i]].length; n++) {%>
+                <p><%= d[eggNames[i]][n].name %>, <%= d[eggNames[i]][n].amount %>g</p>
+              <% } %>
+            <% } %>
+          </div>
       </div>
+
     </div>
 
     <script src="../main.js"></script>

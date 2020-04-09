@@ -1,15 +1,13 @@
 /* eslint-disable no-unused-vars */
 
-
-
 const deleteProducer = clickedId => {
     fetch('admin', {
-            method: 'delete',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id: clickedId }),
-        })
+        method: 'delete',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: clickedId }),
+    })
         .then(res => {
             if (res.ok) return res.json()
         })
@@ -21,12 +19,12 @@ const deleteProducer = clickedId => {
 
 const deleteProduct = (clickedProduct, currentProducer) => {
     fetch('/producer', {
-            method: 'delete',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ clickedProduct, currentProducer }),
-        })
+        method: 'delete',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ clickedProduct, currentProducer }),
+    })
         .then(res => {
             if (res.ok) return res.json()
         })
@@ -42,12 +40,12 @@ const refillProduct = (clickedProduct, currentProducer) => {
         alert('Fyll i ett värde!')
     } else {
         fetch('/producer', {
-                method: 'put',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ amountToRefill, clickedProduct, currentProducer }),
-            })
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ amountToRefill, clickedProduct, currentProducer }),
+        })
             .then(res => {
                 if (res.ok) return res.json()
             })
@@ -78,8 +76,8 @@ function calculatePrice(array) {
     for (let i = 0; i < array.length; i++) {
         total += array[i].price * array[i].amount
     }
-    if (total > 99) total = total / 100 + ' kronor'
-    else total = total + ' öre'
+    if (total > 99) total = `${total / 100} kronor`
+    else total += ' öre'
     return total
 }
 
@@ -104,7 +102,6 @@ const pushToList = (name, amount, producer, price) => {
     console.log(candyList)
     document.getElementById('eggWindow').appendChild(eggDisplay(candyList))
     document.getElementById('price').innerHTML = `${calculatePrice(candyList)}`
-
 }
 
 const decreaseStock = (clickedProduct, amountToDecrease, currentProducer, price) => {
@@ -112,12 +109,12 @@ const decreaseStock = (clickedProduct, amountToDecrease, currentProducer, price)
         alert('Fyll i ett värde!')
     } else {
         fetch('/producerstock', {
-                method: 'put',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ clickedProduct, amountToDecrease, currentProducer }),
-            })
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ clickedProduct, amountToDecrease, currentProducer }),
+        })
             .then(res => {
                 if (res.ok) return res.json()
             })
@@ -129,6 +126,7 @@ const decreaseStock = (clickedProduct, amountToDecrease, currentProducer, price)
 }
 
 const postEgg = () => {
+<<<<<<< HEAD
 
     let eggName = ''
     eggName = document.getElementById('eggname').value
@@ -153,9 +151,33 @@ const postEgg = () => {
     })
 
            
+=======
+    egg.eggName = ''
+    egg.eggName = document.getElementById('eggname').value
+
+    if (egg.eggName != '') {
+        for (let i = 0; i < candyList.length; i++) {
+            egg.name = candyList[i].name
+            egg.amount = candyList[i].amount
+            egg.price = candyList[i].price
+
+            fetch('/addedCandy', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(egg),
+            })
+                .then(res => {
+                    if (res.ok) return res.json()
+                })
+                .then(data => {
+                    console.log(data)
+                })
+>>>>>>> c7404b6affe3747d0df9bb1e0cbc81db86754c0e
         }
-
     }
+<<<<<<< HEAD
 
 
 
@@ -164,3 +186,6 @@ const postEgg = () => {
 
 
 
+=======
+}
+>>>>>>> c7404b6affe3747d0df9bb1e0cbc81db86754c0e
