@@ -125,7 +125,7 @@ const decreaseStock = (clickedProduct, amountToDecrease, currentProducer, price)
     }
 }
 
-const postEgg = () => {
+const postEgg = (userid) => {
 
     let eggName = ''
     eggName = document.getElementById('eggname').value
@@ -134,7 +134,7 @@ const postEgg = () => {
 
      egg = {name: eggName, candyList: candyList}
      console.log(candyList)
-     fetch('/addedCandy', {
+     fetch('/addedCandy/' + userid, {
         method: 'post',
         headers: {
             'Content-Type': 'application/json'
