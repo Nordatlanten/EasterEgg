@@ -51,6 +51,19 @@ consumer
             })
         })
     })
+    .delete((req, res) => {
+        let query = `DELETE FROM addedCandy WHERE eggName = ? AND userid = ?`
+        const deleteData = [req.body.eggName, req.body.userid]
+        pool((err, connection) => {
+            connection.query(query, deleteData, (err, result, fields) => {
+                connection.release()
+
+                if (err) throw err
+
+                res.send(result)
+            })
+        })
+    })
 
 // Route som hämtar godis till konsumentsidan.
 consumer
@@ -129,13 +142,11 @@ consumer
                     await connection.query(query, values, (err, result, fields) => {
                         if (err) throw err
 
-                        console.log('Added ' + candyList[i].amount + ' of ' + candyList[i].name + ' to egg "' + eggName + '"')
+                        console.log(`Added ${candyList[i].amount} of ${candyList[i].name} to egg "${eggName}"`)
                     })
                 } catch (error) {
                     return callback(error)
                 }
-
-
             }
 
             connection.release()
