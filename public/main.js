@@ -164,7 +164,6 @@ const postEgg = userid => {
     eggName = document.getElementById('eggname').value
 
     if (eggName != '' && candyList != []) {
-<<<<<<< HEAD
         egg = { name: eggName, candyList }
         console.log(candyList)
         fetch(`/addedCandy/${userid}`, {
@@ -174,29 +173,11 @@ const postEgg = userid => {
             },
             body: JSON.stringify(egg),
         })
-=======
-
-        egg = { name: eggName, candyList: candyList }
-        console.log(candyList)
-        fetch('/addedCandy/' + userid, {
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(egg)
-            })
-
->>>>>>> 33b0e03945fed6008207f4573f034208976babc1
             .then(res => {
                 if (res.ok) return res.json()
             })
             .then(data => {
                 console.log(data)
             })
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 33b0e03945fed6008207f4573f034208976babc1
     }
 }
