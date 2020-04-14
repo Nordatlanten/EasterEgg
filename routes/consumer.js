@@ -150,6 +150,7 @@ consumer
             }
 
             connection.release()
+            res.send({ message: 'Egg added' })
         })
     })
 

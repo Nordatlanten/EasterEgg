@@ -167,15 +167,13 @@ const postEgg = userid => {
                 if (res.ok) return res.json()
             })
             .then(data => {
+                window.location.reload(true)
                 console.log(data)
             })
     }
 }
 
 const deleteEgg = (userid, eggName) => {
-    console.log(userid)
-    console.log(eggName)
-
     fetch('/eggs', {
         method: 'delete',
         headers: {
