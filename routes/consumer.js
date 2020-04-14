@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 /* eslint-disable no-nested-ternary */
 const express = require('express')
 const async = require('async')
+=======
+//Initierar express, mongodb & mysql
+
+const express = require('express')
+const pool = require('../pool.js')
+>>>>>>> 33b0e03945fed6008207f4573f034208976babc1
 
 const consumer = express.Router()
 
@@ -19,6 +26,10 @@ client.connect(err => {
     db = client.db('candydb').collection('producers')
 })
 
+//
+
+
+//Behövs koden nedan? 
 consumer
     .route('/eggs')
     .get((req, res) => {
@@ -49,6 +60,11 @@ consumer
         })
     })
 
+<<<<<<< HEAD
+=======
+
+//Route som hämtar godis till konsumentsidan.
+>>>>>>> 33b0e03945fed6008207f4573f034208976babc1
 consumer
     .route('/consumer/:userid')
 
@@ -107,11 +123,18 @@ consumer
         })
     })
 
+<<<<<<< HEAD
 consumer
     .route('/addedCandy/:userid')
+=======
 
-    .post((req, res) => {
+//Route för att lägga till påskägg till kundens personliga lista.
+consumer.route('/addedCandy/:userid')
+>>>>>>> 33b0e03945fed6008207f4573f034208976babc1
+
+    .post(async (req, res) => {
         let eggName = req.body.name
+<<<<<<< HEAD
         let { candyList } = req.body
         let { userid } = req.params
 
@@ -126,10 +149,30 @@ consumer
                         if (err) throw err
 
                         console.log(`${eggName}added`)
+=======
+        let candyList = req.body.candyList
+        let userid = req.params.userid
+        let query = `INSERT INTO addedCandy (eggName, name, amount, price, userid) VALUES (?, ?, ?, ?, ?)`
+
+
+        pool(async (err, connection) => {
+
+            for (let i = 0; i < candyList.length; i++) {
+                let values = [eggName, candyList[i].name, candyList[i].amount, candyList[i].price, userid]
+
+                try {
+
+                    await connection.query(query, values, (err, result, fields) => {
+
+                        if (err) throw err
+
+                        console.log('Added ' + candyList[i].amount + ' of ' + candyList[i].name + ' to egg "' + eggName + '"')
+>>>>>>> 33b0e03945fed6008207f4573f034208976babc1
                     })
                 } catch (error) {
                     return callback(error)
                 }
+<<<<<<< HEAD
             })
             connection.release()
         })
@@ -161,3 +204,20 @@ module.exports = consumer
 //         })
 //     })
 // })
+=======
+
+
+            }
+
+            connection.release()
+
+        })
+
+    })
+
+
+
+
+
+module.exports = consumer
+>>>>>>> 33b0e03945fed6008207f4573f034208976babc1
