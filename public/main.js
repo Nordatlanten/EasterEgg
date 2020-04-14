@@ -40,12 +40,12 @@ const getNewOffer = function getNewOffer(producer) {
 
 const deleteProducer = clickedId => {
     fetch('admin', {
-            method: 'delete',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ id: clickedId }),
-        })
+        method: 'delete',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: clickedId }),
+    })
         .then(res => {
             if (res.ok) return res.json()
         })
@@ -57,12 +57,12 @@ const deleteProducer = clickedId => {
 
 const deleteProduct = (clickedProduct, currentProducer) => {
     fetch('/producer', {
-            method: 'delete',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ clickedProduct, currentProducer }),
-        })
+        method: 'delete',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ clickedProduct, currentProducer }),
+    })
         .then(res => {
             if (res.ok) return res.json()
         })
@@ -78,12 +78,12 @@ const refillProduct = (clickedProduct, currentProducer) => {
         alert('Fyll i ett värde!')
     } else {
         fetch('/producer', {
-                method: 'put',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ amountToRefill, clickedProduct, currentProducer }),
-            })
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ amountToRefill, clickedProduct, currentProducer }),
+        })
             .then(res => {
                 if (res.ok) return res.json()
             })
@@ -147,12 +147,12 @@ const decreaseStock = (clickedProduct, amountToDecrease, currentProducer, price)
         alert('Fyll i ett värde!')
     } else {
         fetch('/producerstock', {
-                method: 'put',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ clickedProduct, amountToDecrease, currentProducer }),
-            })
+            method: 'put',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ clickedProduct, amountToDecrease, currentProducer }),
+        })
             .then(res => {
                 if (res.ok) return res.json()
             })
@@ -181,7 +181,25 @@ const postEgg = userid => {
                 if (res.ok) return res.json()
             })
             .then(data => {
+                window.location.reload(true)
                 console.log(data)
             })
     }
+}
+
+const deleteEgg = (userid, eggName) => {
+    fetch('/eggs', {
+        method: 'delete',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userid, eggName }),
+    })
+        .then(res => {
+            if (res.ok) return res.json()
+        })
+        .then(data => {
+            window.location.reload(true)
+            console.log(data)
+        })
 }

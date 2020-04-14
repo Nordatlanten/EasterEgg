@@ -11,9 +11,7 @@
         <div id="mainBox">
             <div id="upperRow">
             </div>
-            <div>
-                <h1>Välkommen till Godisbutiken!</h1>
-            </div>
+          
         </div>
         <div>
           <h1>Välkommen till Godisbutiken!</h1>
@@ -91,7 +89,8 @@
         <% } %>
 
           <% for(let i=0; i < eggNames.length; i++) {%>
-            <h3><%= eggNames[i] %></h3>
+            <h3><%= eggNames[i] %> <button onclick="deleteEgg('<%=e%>', '<%=eggNames[i]%>')">Ta bort</button></h3>
+            
             <% for(let n=0; n < d[eggNames[i]].length; n++) {%>
                 <p><%= d[eggNames[i]][n].name %>, <%= d[eggNames[i]][n].amount %>g </p>
               <% } %>
