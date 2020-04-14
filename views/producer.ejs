@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Leverantörssidan</title>
     <link rel="stylesheet" href="../style.css">
+    <script src="/socket.io/socket.io.js"></script>
   </head>
   <body>
     <h1>Välkommen <%= p.producer %>! Fyll på godis nedan:</h1>
@@ -66,6 +67,11 @@
       </li>
       <% } %>
     </ul>
+
+    <h2>Skicka meddelande om erbjudande</h2>
+    <div>
+      <input type="text" id="offerMessage"> <button onclick="getNewOffer()">Sänd</button>
+    </div>
 
     <script src='../main.js'> </script>
   </body>

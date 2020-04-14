@@ -1,5 +1,39 @@
 /* eslint-disable no-unused-vars */
 
+let newOffer = ''
+let offerList = []
+const offerMessageBox = document.getElementById('offerMessageBox')
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const socket = io.connect('http://localhost:8081')
+
+    
+    socket.on('offers', (data) => {
+        console.log(data)
+        offerList = data.offers
+        offerMessageBox.innerHTML = offerList
+        
+    })
+
+
+
+})
+
+const getNewOffer = function getNewOffer() {
+    const socket = io.connect('http://localhost:8081')
+
+    newOffer = document.getElementById('offerMessage').value
+    console.log(newOffer)
+    socket.emit('new offer', {
+        newOffer: newOffer
+    })
+
+}
+
+
+  
+
 const deleteProducer = clickedId => {
     fetch('admin', {
             method: 'delete',

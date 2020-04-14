@@ -12,8 +12,8 @@
     <ul class="producers">
       <% for(let i=0; i < producers.length; i++) {%>
       <li class="producers">
-        <span><%= producers[i].producer %></span>
-        <span><%= producers[i].description %></span>
+        <div>Leverantörnamn: <span><%= producers[i].producer %></span></div> 
+       <div>Beskrivning: <span><%= producers[i].description %></span></div> 
        
         <button onClick="deleteProducer('<%= producers[i]._id %>')" >Ta bort</button>
       </li>
