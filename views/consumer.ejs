@@ -17,34 +17,34 @@
 
       <div id="mainRow">
         <div id="candyList">
-          <div id="candyFilterBox">
-            <button class="whiteButton">
-              Filtrera efter
-            </button>
-            <button class="whiteButton">
-              Sök
-            </button>
-          </div>
           <h2>Äggnamn:</h2>
           <input type="text" id="eggname" placeholder="Skriv äggnamn här..." />
           <div id="sortingRow">
             <span>Sortera efter:</span>
-            <span class="sorting">namn</span>
-            <span class="sorting">pris</span>
+            <span class="sorting"><a href="?sort=candyname">namn</a></span>
+            <span class="sorting"><a href="?sort=price">pris</a></span>
+            <span class="sorting"><a href="?sort=producer">tillverkare</a></span>
+          </div>
+          <div id="sortingRow">
+            Filtrera:
+            <form action="/consumer/<%=e%>" method="GET">
+              Vingummi:
+              <input type="checkbox" id="Vingummi" name="filter" value="Vingummi" checked>
+              Choklad:
+              <input type="checkbox" id="Choklad" name="filter" value="Choklad" checked>
+              Lakrits:
+              <input type="checkbox" id="Lakrits" name="filter" value="Lakrits" checked>
+              <button type="submit">filtrera</button>
+            </form>
+         
           </div>
 
           <div id="candies">
-            <div id="headlines">
-              <span>Sort</span>
-              <span>Pris</span>
-              <span>Antal</span>
-              <span>Lager</span>
-            </div>
-
             <% for(let i=0; i < c.length; i++) {%>
             <div class="candyItems">
               <span class="nameBox"><%= c[i].products.name %></span>
               <span><%= c[i].products.price %></span>
+              <span><%= c[i].producer %></span>
               <span
                 ><input
                   id="<%=c[i].products.name%>"

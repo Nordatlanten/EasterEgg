@@ -125,38 +125,25 @@ const decreaseStock = (clickedProduct, amountToDecrease, currentProducer, price)
     }
 }
 
-const postEgg = (userid) => {
-
+const postEgg = userid => {
     let eggName = ''
     eggName = document.getElementById('eggname').value
 
     if (eggName != '' && candyList != []) {
-
-     egg = {name: eggName, candyList: candyList}
-     console.log(candyList)
-     fetch('/addedCandy/' + userid, {
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(egg)
-    })
-
-    .then(res => {
-        if (res.ok) return res.json()
-    })
-    .then(data => {
-        console.log(data)
-    })
-
-           
-        }
+        egg = { name: eggName, candyList }
+        console.log(candyList)
+        fetch(`/addedCandy/${userid}`, {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(egg),
+        })
+            .then(res => {
+                if (res.ok) return res.json()
+            })
+            .then(data => {
+                console.log(data)
+            })
     }
-
-
-
-
-
-
-
-
+}

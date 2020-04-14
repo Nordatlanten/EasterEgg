@@ -19,8 +19,12 @@
 }
 
 #newEggBox {
-  width: 25vw;
+  text-align: center;
+  justify-content: space-around;
+  align-items: center;
+}
 
+#eggWindow {
   text-align: center;
   justify-content: space-around;
   align-items: center;
@@ -77,7 +81,7 @@
 #sortingRow {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-around;
   background-color: #bbb;
 }
 
