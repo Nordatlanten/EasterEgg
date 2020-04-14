@@ -1,6 +1,7 @@
+//Initierar express, mongodb & mysql
+
 const express = require('express')
 const pool = require('../pool.js')
-const async = require('async')
 
 const consumer = express.Router()
 
@@ -18,6 +19,10 @@ client.connect(err => {
     db = client.db('candydb').collection('producers')
 })
 
+//
+
+
+//Behövs koden nedan? 
 consumer
     .route('/eggs')
     .get((req, res) => {
@@ -49,6 +54,7 @@ consumer
     })
 
 
+//Route som hämtar godis till konsumentsidan.
 consumer
     .route('/consumer/:userid')
 
@@ -85,67 +91,44 @@ consumer
     })
 
 
+//Route för att lägga till påskägg till kundens personliga lista.
 consumer.route('/addedCandy/:userid')
 
-    .post((req, res) => {
+    .post(async (req, res) => {
         let eggName = req.body.name
         let candyList = req.body.candyList
         let userid = req.params.userid
-
-
         let query = `INSERT INTO addedCandy (eggName, name, amount, price, userid) VALUES (?, ?, ?, ?, ?)`
-        pool((err, connection) => {
-            async.forEachOf(candyList, function(candy, i, inner_callback) {
+
+
+        pool(async (err, connection) => {
+
+            for (let i = 0; i < candyList.length; i++) {
+                let values = [eggName, candyList[i].name, candyList[i].amount, candyList[i].price, userid]
 
                 try {
 
-                    let values = [eggName, candy.name, candy.amount, candy.price, userid]
-                    console.log(values)
-
-                    connection.query(query, values, (err, result, fields) => {
+                    await connection.query(query, values, (err, result, fields) => {
 
                         if (err) throw err
-                     
-                        console.log(eggName + 'added')
+
+                        console.log('Added ' + candyList[i].amount + ' of ' + candyList[i].name + ' to egg "' + eggName + '"')
                     })
                 } catch (error) {
                     return callback(error)
                 }
 
 
-            })
-            connection.release()
-        })
+            }
 
+            connection.release()
+
+        })
 
     })
 
 
+
+
+
 module.exports = consumer
-
-
-
-// app.post('/', (req, res) => {
-//     database.run('INSERT INTO testquiz (quizname) VALUES (?)', [req.body.quizname]).then(statement => {
-//         const promises = []
-//         const id = statement.lastID
-//         for (let n = 0; n < req.body.questions.length; n++) {
-//             const promise = database.run(
-//                 'INSERT INTO testquestions (question, a1, a2, a3, a4, group_id, rightanswer) VALUES (?, ?, ?, ?, ?, ?, ?)',
-//                 [
-//                     req.body.questions[n].question,
-//                     req.body.questions[n].a1,
-//                     req.body.questions[n].a2,
-//                     req.body.questions[n].a3,
-//                     req.body.questions[n].a4,
-//                     id,
-//                     req.body.questions[n].rightanswer,
-//                 ]
-//             )
-//             promises.push(promise)
-//         }
-//         Promise.all(promises).then(() => {
-//             res.send('Quiz added')
-//         })
-//     })
-// })

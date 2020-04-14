@@ -1,11 +1,10 @@
 const express = require('express')
-
 const producer = express.Router()
 const ObjectId = require('mongodb').ObjectID
-
 const { MongoClient } = require('mongodb')
 const pool = require('../pool.js')
 
+//Våra kredentialer finns i variabel pw.
 const pw = require('../pw.js')
 
 const uri = pw.mdbConnect
@@ -36,9 +35,7 @@ producer
             stock: parseInt(newProduct.stock),
         }
 
-        db.updateMany(
-            { producer: req.params.producer, 'products.name': { $ne: newProduct.name } },
-            { $push: { products: insertProduct } },
+        db.updateMany({ producer: req.params.producer, 'products.name': { $ne: newProduct.name } }, { $push: { products: insertProduct } },
             (err, result) => {
                 if (err) console.log(err)
                 console.log(`${newProduct.name} added.`)
@@ -52,9 +49,7 @@ producer
     .delete((req, res) => {
         const { currentProducer } = req.body
         const { clickedProduct } = req.body
-        db.updateMany(
-            { producer: currentProducer },
-            { $pull: { products: { name: clickedProduct } } },
+        db.updateMany({ producer: currentProducer }, { $pull: { products: { name: clickedProduct } } },
             (err, result) => {
                 if (err) return res.send(500, err)
                 res.send({ message: 'Godis bortplockad' })
@@ -66,9 +61,7 @@ producer
         const amountToRefill = parseInt(req.body.amountToRefill)
         const { currentProducer } = req.body
 
-        db.updateMany(
-            { producer: currentProducer, 'products.name': clickedProduct },
-            { $inc: { 'products.$.stock': amountToRefill } },
+        db.updateMany({ producer: currentProducer, 'products.name': clickedProduct }, { $inc: { 'products.$.stock': amountToRefill } },
             (err, result) => {
                 if (err) console.log(err)
                 res.send({ message: 'Lagret uppdaterat' })
@@ -82,9 +75,7 @@ producer.route('/producerstock').put((req, res) => {
     const amountToDecrease = parseInt(req.body.amountToDecrease)
     const { currentProducer } = req.body
 
-    db.updateMany(
-        { producer: currentProducer, 'products.name': clickedProduct },
-        { $inc: { 'products.$.stock': -amountToDecrease } },
+    db.updateMany({ producer: currentProducer, 'products.name': clickedProduct }, { $inc: { 'products.$.stock': -amountToDecrease } },
         (err, result) => {
             if (err) console.log(err)
             res.send({ message: 'Lagret uppdaterat' })
