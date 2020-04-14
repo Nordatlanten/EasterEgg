@@ -1,8 +1,10 @@
 /* eslint-disable no-unused-vars */
 
 let newOffer = ''
-let offerList = []
-const offerMessageBox = document.getElementById('offerMessageBox')
+
+const offerMessageList = document.getElementById('offerMessageList')
+
+
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -10,9 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     
     socket.on('offers', (data) => {
-        console.log(data)
-        offerList = data.offers
-        offerMessageBox.innerHTML = offerList
+        let item = document.createElement('li')
+
+        item.appendChild(document.createTextNode('Erbjudande av ' + data.producer + ': ' + data.newOffer))
+        offerMessageList.appendChild(item)
         
     })
 
@@ -20,12 +23,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 })
 
-const getNewOffer = function getNewOffer() {
+const getNewOffer = function getNewOffer(producer) {
     const socket = io.connect('http://localhost:8081')
-
+   
     newOffer = document.getElementById('offerMessage').value
-    console.log(newOffer)
+ 
     socket.emit('new offer', {
+        producer: producer,
         newOffer: newOffer
     })
 

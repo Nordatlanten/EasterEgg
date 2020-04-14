@@ -70,7 +70,16 @@
 
     <h2>Skicka meddelande om erbjudande</h2>
     <div>
-      <input type="text" id="offerMessage"> <button onclick="getNewOffer()">Sänd</button>
+      <input type="text" id="offerMessage"> <button onclick="getNewOffer('<%= p.producer %>')">Sänd</button>
+
+    </div>
+
+    <div>
+      <h3>Nuvarande erbjudanden:</h3>
+      <ul id="offerMessageList">
+
+      </ul>
+       
     </div>
 
     <script src='../main.js'> </script>

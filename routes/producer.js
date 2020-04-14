@@ -21,9 +21,12 @@ client.connect(err => {
 producer
     .route('/producer/:producer')
     .get((req, res) => {
+
+    
+
         db.find({ producer: req.params.producer }).toArray((err, results) => {
             if (err) console.log(err)
-            res.render('./producer.ejs', { p: results[0] })
+            res.render('./producer.ejs', { p: results[0]})
         })
     })
     .post((req, res) => {

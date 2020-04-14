@@ -16,17 +16,17 @@ const router = require('./router.js')
 
 app.use('/', router)
 
-let offers = []
+
 
 io.on('connection', (socket) => {
 
     socket.on('new offer', (data) => {
-        offers.push(data.newOffer)
-        console.log(offers)
-
         
+        
+
         socket.broadcast.emit('offers', {
-            offers: offers
+          producer: data.producer,
+          newOffer: data.newOffer
         })
     })
 
