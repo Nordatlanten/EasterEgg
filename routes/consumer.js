@@ -1,9 +1,11 @@
-/* eslint-disable no-nested-ternary */
+// Initierar express, mongodb & mysql
+
 const express = require('express')
+const pool = require('../pool.js')
+
 const consumer = express.Router()
 
 const { MongoClient } = require('mongodb')
-const pool = require('../pool.js')
 
 const pw = require('../pw.js')
 
@@ -19,8 +21,7 @@ client.connect(err => {
 
 //
 
-
-//Behövs koden nedan? 
+// Behövs koden nedan?
 consumer
     .route('/eggs')
     .get((req, res) => {
@@ -51,8 +52,7 @@ consumer
         })
     })
 
-
-//Route som hämtar godis till konsumentsidan.
+// Route som hämtar godis till konsumentsidan.
 consumer
     .route('/consumer/:userid')
 
@@ -111,26 +111,22 @@ consumer
         })
     })
 
-
-//Route för att lägga till påskägg till kundens personliga lista.
-consumer.route('/addedCandy/:userid')
+// Route för att lägga till påskägg till kundens personliga lista.
+consumer
+    .route('/addedCandy/:userid')
 
     .post(async (req, res) => {
         let eggName = req.body.name
-        let candyList = req.body.candyList
-        let userid = req.params.userid
+        let { candyList } = req.body
+        let { userid } = req.params
         let query = `INSERT INTO addedCandy (eggName, name, amount, price, userid) VALUES (?, ?, ?, ?, ?)`
 
-
         pool(async (err, connection) => {
-
             for (let i = 0; i < candyList.length; i++) {
                 let values = [eggName, candyList[i].name, candyList[i].amount, candyList[i].price, userid]
 
                 try {
-
                     await connection.query(query, values, (err, result, fields) => {
-
                         if (err) throw err
 
                         console.log('Added ' + candyList[i].amount + ' of ' + candyList[i].name + ' to egg "' + eggName + '"')
@@ -143,13 +139,7 @@ consumer.route('/addedCandy/:userid')
             }
 
             connection.release()
-
         })
-
     })
-
-
-
-
 
 module.exports = consumer
