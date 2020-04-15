@@ -32,28 +32,32 @@
             Filtrera:
             <form action="/consumer/<%=e%>" method="GET">
               Vingummi:
-              <input type="checkbox" id="Vingummi" name="filter" value="Vingummi" checked>
+              <input type="checkbox" id="Vingummi" name="filter" value="Vingummi">
               Choklad:
-              <input type="checkbox" id="Choklad" name="filter" value="Choklad" checked>
+              <input type="checkbox" id="Choklad" name="filter" value="Choklad">
               Lakrits:
-              <input type="checkbox" id="Lakrits" name="filter" value="Lakrits" checked>
+              <input type="checkbox" id="Lakrits" name="filter" value="Lakrits">
               <button type="submit">filtrera</button>
             </form>
          
           </div>
 
           <div id="candies">
+            <% let currentCandies = [] %>
             <% for(let i=0; i < c.length; i++) {%>
             <div class="candyItems">
               <span class="nameBox"><%= c[i].products.name %></span>
+              <% currentCandies.push(c[i].products.name) %>
               <span><%= c[i].products.price %></span>
               <span><%= c[i].producer %></span>
               <span
-                ><input
+                >
+                <input
                   id="<%=c[i].products.name%>"
                   type="number"
                   min="0"
                   style="width: 100%;"
+                  class="candyinput"
                 />
               </span>
               <span
@@ -68,6 +72,7 @@
             </div>
 
             <% } %>
+            <button onclick="randomEgg(<%= JSON.stringify(currentCandies) %>)">Slumpa ägg</button>
           </div>
         </div>
 

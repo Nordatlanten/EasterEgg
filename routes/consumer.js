@@ -1,11 +1,10 @@
 // Initierar express, mongodb & mysql
 
 const express = require('express')
+const { MongoClient } = require('mongodb')
 const pool = require('../pool.js')
 
 const consumer = express.Router()
-
-const { MongoClient } = require('mongodb')
 
 const pw = require('../pw.js')
 
@@ -144,8 +143,8 @@ consumer
 
                         console.log(`Added ${candyList[i].amount} of ${candyList[i].name} to egg "${eggName}"`)
                     })
-                } catch (error) {
-                    return callback(error)
+                } catch (err) {
+                    if (err) return err
                 }
             }
 

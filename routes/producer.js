@@ -1,9 +1,7 @@
 const express = require('express')
 
 const producer = express.Router()
-const ObjectId = require('mongodb').ObjectID
 const { MongoClient } = require('mongodb')
-const pool = require('../pool.js')
 
 // Våra kredentialer finns i variabel pw.
 const pw = require('../pw.js')
@@ -67,12 +65,10 @@ producer
 producer
     .route('/producer/:apikey/:producer')
     .get((req, res) => {
-
-    
-
-        db.find({ producer: req.params.producer }).toArray((err, results) => {
+        const currentProducer = req.params.producer
+        db.find({ producer: currentProducer }).toArray((err, results) => {
             if (err) console.log(err)
-            res.render('./producer.ejs', { p: results[0]})
+            res.render('./producer.ejs', { p: results[0] })
         })
     })
     .post((req, res) => {

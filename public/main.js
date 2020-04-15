@@ -2,6 +2,7 @@
 
 let newOffer = ''
 
+<<<<<<< HEAD
 const offerMessageList = document.querySelector('.offerMessageList')
 
 
@@ -10,32 +11,36 @@ document.addEventListener('DOMContentLoaded', () => {
   
     
     socket.on('offers', (data) => {
+=======
+const offerMessageList = document.getElementById('offerMessageList')
+
+document.addEventListener('DOMContentLoaded', () => {
+    const socket = io.connect('http://localhost:8081')
+
+    socket.on('offers', data => {
+>>>>>>> ac4eff325d3863d80207d79adc1ddfb8de30dca0
         let item = document.createElement('li')
 
-        item.appendChild(document.createTextNode('Erbjudande av ' + data.producer + ': ' + data.newOffer))
+        item.appendChild(document.createTextNode(`Erbjudande av ${data.producer}: ${data.newOffer}`))
         offerMessageList.appendChild(item)
-        
     })
-
-
-
 })
 
 const getNewOffer = function getNewOffer(producer) {
     const socket = io.connect('http://localhost:8081')
+<<<<<<< HEAD
     
    
+=======
+
+>>>>>>> ac4eff325d3863d80207d79adc1ddfb8de30dca0
     newOffer = document.getElementById('offerMessage').value
- 
+
     socket.emit('new offer', {
-        producer: producer,
-        newOffer: newOffer
+        producer,
+        newOffer,
     })
-
 }
-
-
-  
 
 const deleteProducer = clickedId => {
     fetch('admin', {
@@ -203,33 +208,8 @@ const deleteEgg = (userid, eggName) => {
         })
 }
 
-//authentication
-
-const loginCheck = creds => {
-  
-    // console.log(creds[2])
-    
-
-
-    let user = document.getElementById('userField').value
-    let pass = document.getElementById('passwordField').value
-    // console.log(user, pass)
-
-    for(let i = 0; i < creds.length ; i++){
-        console.log(creds[i])
+function randomEgg(candyArr) {
+    for (let i = 0; i < candyArr.length; i++) {
+        document.getElementById(candyArr[i]).value = Math.floor(Math.random() * 25) + 1
     }
-
-
-    // switch (user, pass) {
-    //     case (user == haribo && pass == secret):
-        
-
-    //     break;
-
-    //     case (user == marabou && pass == secret):
-    //     break;
-
-    //     case (user == cloetta && pass == secret):
-    //     break;
-    // }
 }
