@@ -4,12 +4,10 @@ let newOffer = ''
 
 const offerMessageList = document.querySelector('.offerMessageList')
 
-
 document.addEventListener('DOMContentLoaded', () => {
     const socket = io.connect('http://localhost:8081')
-  
-    
-    socket.on('offers', (data) => {
+
+    socket.on('offers', data => {
         let item = document.createElement('li')
 
         item.appendChild(document.createTextNode(`Erbjudande av ${data.producer}: ${data.newOffer}`))
@@ -19,8 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const getNewOffer = function getNewOffer(producer) {
     const socket = io.connect('http://localhost:8081')
-    
-   
+
     newOffer = document.getElementById('offerMessage').value
 
     socket.emit('new offer', {

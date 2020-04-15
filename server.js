@@ -14,7 +14,7 @@ app.use(bodyParser.json())
 app.set('view engine', 'ejs')
 app.use(
     session({
-        secret: 'secret',
+        secret: 'hemlis',
         resave: true,
         saveUninitialized: true,
     })

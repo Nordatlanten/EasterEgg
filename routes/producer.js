@@ -20,45 +20,15 @@ client.connect(err => {
     db = client.db('candydb').collection('producers')
 })
 
-producer.route('/auth').post((req, res) => {
-    let user = req.body.username
-    let pass = req.body.password
-    let query = `SELECT * FROM credentials WHERE user = ? AND password = ?`
-
-    console.log(user, pass)
-
-    if (user && pass) {
-        pool((err, connection) => {
-            connection.query(query, [user, pass], (err, result, fields) => {
-                if (err) throw err
-
-                console.log(result)
-                if (result.length > 0) {
-                    req.session.loggedin = true
-                    req.session.username = user
-
-                    res.redirect(`/producer/${user}`)
-                } else {
-                    res.send('Incorrect username and/or password')
-                }
-                res.end()
-            })
-        })
-    } else {
-        res.send('Please enter Username and Password!')
-        res.end()
-    }
-})
-
 producer
     .route('/producer/:producer')
     .get((req, res) => {
-        if (req.session.loggedin) {
-            const currentProducer = req.params.producer
+        const currentProducer = req.params.producer
+        if (req.session.loggedin && req.session.username == currentProducer) {
             db.find({ producer: currentProducer }).toArray((err, results) => {
-                console.log(results)
                 if (err) console.log(err)
                 res.render('./producer.ejs', { p: results[0] })
+                res.end()
             })
         } else {
             res.send('Please login to view this page!')
@@ -85,35 +55,35 @@ producer
         )
     })
 
-// producer
-//     .route('/producer')
-//     .delete((req, res) => {
-//         const { currentProducer } = req.body
-//         const { clickedProduct } = req.body
-//         db.updateMany(
-//             { producer: currentProducer },
-//             { $pull: { products: { name: clickedProduct } } },
-//             (err, result) => {
-//                 if (err) return res.send(500, err)
-//                 res.send({ message: 'Godis bortplockad' })
-//             }
-//         )
-//     })
-//     .put((req, res) => {
-//         const { clickedProduct } = req.body
-//         const amountToRefill = parseInt(req.body.amountToRefill)
-//         const { currentProducer } = req.body
+producer
+    .route('/producer')
+    .delete((req, res) => {
+        const { currentProducer } = req.body
+        const { clickedProduct } = req.body
+        db.updateMany(
+            { producer: currentProducer },
+            { $pull: { products: { name: clickedProduct } } },
+            (err, result) => {
+                if (err) return res.send(500, err)
+                res.send({ message: 'Godis bortplockad' })
+            }
+        )
+    })
+    .put((req, res) => {
+        const { clickedProduct } = req.body
+        const amountToRefill = parseInt(req.body.amountToRefill)
+        const { currentProducer } = req.body
 
-//         db.updateMany(
-//             { producer: currentProducer, 'products.name': clickedProduct },
-//             { $inc: { 'products.$.stock': amountToRefill } },
-//             (err, result) => {
-//                 if (err) console.log(err)
-//                 res.send({ message: 'Lagret uppdaterat' })
-//                 console.log(`${amountToRefill} added to ${clickedProduct}.`)
-//             }
-//         )
-//     })
+        db.updateMany(
+            { producer: currentProducer, 'products.name': clickedProduct },
+            { $inc: { 'products.$.stock': amountToRefill } },
+            (err, result) => {
+                if (err) console.log(err)
+                res.send({ message: 'Lagret uppdaterat' })
+                console.log(`${amountToRefill} added to ${clickedProduct}.`)
+            }
+        )
+    })
 
 producer.route('/producerstock').put((req, res) => {
     const { clickedProduct } = req.body
