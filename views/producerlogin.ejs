@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Leverantör login</title>
     <script src="/socket.io/socket.io.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Logga in</h1>
     <p>Ditt användarnamn är ditt leverantörsnamn (t.ex. "Haribo")</p>
     <p>Ditt lösenord är hemligt.</p>
 
+    <form action="/auth" method="POST">
+      <input
+        type="text"
+        name="username"
+        placeholder="Användarnamn"
+        id="userField"
+      />
+      <input
+        type="password"
+        placeholder="Lösenord"
+        name="password"
+        id="passwordField"
+      />
 
-   
-<form action="auth" method="POST">
+      <input type="submit" value="Logga in" />
+    </form>
 
-    
-
-    <input type="text" name="username" placeholder="Användarnamn" id="userField">
-    <input type="password" placeholder="Lösenord" name="password" id="passwordField">
-    
-    <input type="submit" value="Logga in">
-</form>
-
-<script src="../main.js"></script>
-</body>
+    <script src="../main.js"></script>
+  </body>
 </html>

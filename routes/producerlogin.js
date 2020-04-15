@@ -6,7 +6,6 @@ const pool = require('../pool.js')
 
 const pw = require('../pw.js')
 
-
 let db
 
 producerlogin.route('/producer').get((req, res) => {
@@ -18,7 +17,7 @@ producerlogin.route('/producer').get((req, res) => {
             console.log(result)
             if (err) throw err
 
-            res.render('./producerlogin.ejs', { creds: result})
+            res.render('./producerlogin.ejs', { creds: result })
         })
     })
 })

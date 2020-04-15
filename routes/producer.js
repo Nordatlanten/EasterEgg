@@ -7,12 +7,11 @@ const pool = require('../pool.js')
 // Våra kredentialer finns i variabel pw.
 const pw = require('../pw.js')
 
-//Användares kredentialer finns i variabel credentials
+// Användares kredentialer finns i variabel credentials
 const credentials = require('../credentials')
 
 const uri = pw.mdbConnect
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-
 
 let db
 
@@ -21,56 +20,49 @@ client.connect(err => {
     db = client.db('candydb').collection('producers')
 })
 
+producer.route('/auth').post((req, res) => {
+    let user = req.body.username
+    let pass = req.body.password
+    let query = `SELECT * FROM credentials WHERE user = ? AND password = ?`
 
+    console.log(user, pass)
 
+    if (user && pass) {
+        pool((err, connection) => {
+            connection.query(query, [user, pass], (err, result, fields) => {
+                if (err) throw err
 
-producer
-    .route('/auth')
-        .post((req, res) => {
-            let user = req.body.username
-            let pass = req.body.password
-            let query = `SELECT * FROM credentials WHERE user = ? AND password = ?`
+                console.log(result)
+                if (result.length > 0) {
+                    req.session.loggedin = true
+                    req.session.username = user
 
-            console.log(user, pass)
-
-            if(user && pass) {
-
-                pool((err, connection) => {
-                    
-                    connection.query(query, [user, pass], (err, result, fields) => {
-                        if (err) throw err
-
-                        console.log(result)
-                        if (result.length > 0) {
-                            let key = result[0].apikey
-                        req.session.loggedin = true
-                        req.session.username = user
-                        
-                        res.redirect('/producer/' + key + '/' + user.charAt(0).toUpperCase() + 
-                        user.slice(1) )
-                        } else {
-                            res.send('Incorrect username and/or password')
-                        }
-                    res.end()
-                })
-            
-            }) } else {
-                    res.send('Please enter Username and Password!')
-                    res.end()
+                    res.redirect(`/producer/${user}`)
+                } else {
+                    res.send('Incorrect username and/or password')
                 }
+                res.end()
             })
-        
-
- 
-            
-producer
-    .route('/producer/:apikey/:producer')
-    .get((req, res) => {
-        const currentProducer = req.params.producer
-        db.find({ producer: currentProducer }).toArray((err, results) => {
-            if (err) console.log(err)
-            res.render('./producer.ejs', { p: results[0] })
         })
+    } else {
+        res.send('Please enter Username and Password!')
+        res.end()
+    }
+})
+
+producer
+    .route('/producer/:producer')
+    .get((req, res) => {
+        if (req.session.loggedin) {
+            const currentProducer = req.params.producer
+            db.find({ producer: currentProducer }).toArray((err, results) => {
+                console.log(results)
+                if (err) console.log(err)
+                res.render('./producer.ejs', { p: results[0] })
+            })
+        } else {
+            res.send('Please login to view this page!')
+        }
     })
     .post((req, res) => {
         const newProduct = req.body
