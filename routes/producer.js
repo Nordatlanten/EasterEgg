@@ -2,6 +2,7 @@ const express = require('express')
 
 const producer = express.Router()
 const { MongoClient } = require('mongodb')
+const pool = require('../pool.js')
 
 // Våra kredentialer finns i variabel pw.
 const pw = require('../pw.js')
