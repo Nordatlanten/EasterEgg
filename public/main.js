@@ -2,14 +2,12 @@
 
 let newOffer = ''
 
-const offerMessageList = document.getElementById('offerMessageList')
-
-
+const offerMessageList = document.querySelector('.offerMessageList')
 
 
 document.addEventListener('DOMContentLoaded', () => {
     const socket = io.connect('http://localhost:8081')
-
+  
     
     socket.on('offers', (data) => {
         let item = document.createElement('li')
@@ -25,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const getNewOffer = function getNewOffer(producer) {
     const socket = io.connect('http://localhost:8081')
+    
    
     newOffer = document.getElementById('offerMessage').value
  
@@ -202,4 +201,35 @@ const deleteEgg = (userid, eggName) => {
             window.location.reload(true)
             console.log(data)
         })
+}
+
+//authentication
+
+const loginCheck = creds => {
+  
+    // console.log(creds[2])
+    
+
+
+    let user = document.getElementById('userField').value
+    let pass = document.getElementById('passwordField').value
+    // console.log(user, pass)
+
+    for(let i = 0; i < creds.length ; i++){
+        console.log(creds[i])
+    }
+
+
+    // switch (user, pass) {
+    //     case (user == haribo && pass == secret):
+        
+
+    //     break;
+
+    //     case (user == marabou && pass == secret):
+    //     break;
+
+    //     case (user == cloetta && pass == secret):
+    //     break;
+    // }
 }
