@@ -1,9 +1,9 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+
 const app = express()
 
-
-//Socket.io setup
+// Socket.io setup
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
 
@@ -16,20 +16,13 @@ const router = require('./router.js')
 
 app.use('/', router)
 
-
-
-io.on('connection', (socket) => {
-
-    socket.on('new offer', (data) => {
-        
-        
-
+io.on('connection', socket => {
+    socket.on('new offer', data => {
         socket.broadcast.emit('offers', {
-          producer: data.producer,
-          newOffer: data.newOffer
+            producer: data.producer,
+            newOffer: data.newOffer,
         })
     })
-
 })
 
 server.listen('8081', () => {

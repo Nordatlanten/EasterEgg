@@ -4,39 +4,27 @@ let newOffer = ''
 
 const offerMessageList = document.getElementById('offerMessageList')
 
-
-
-
 document.addEventListener('DOMContentLoaded', () => {
     const socket = io.connect('http://localhost:8081')
 
-    
-    socket.on('offers', (data) => {
+    socket.on('offers', data => {
         let item = document.createElement('li')
 
-        item.appendChild(document.createTextNode('Erbjudande av ' + data.producer + ': ' + data.newOffer))
+        item.appendChild(document.createTextNode(`Erbjudande av ${data.producer}: ${data.newOffer}`))
         offerMessageList.appendChild(item)
-        
     })
-
-
-
 })
 
 const getNewOffer = function getNewOffer(producer) {
     const socket = io.connect('http://localhost:8081')
-   
+
     newOffer = document.getElementById('offerMessage').value
- 
+
     socket.emit('new offer', {
-        producer: producer,
-        newOffer: newOffer
+        producer,
+        newOffer,
     })
-
 }
-
-
-  
 
 const deleteProducer = clickedId => {
     fetch('admin', {
@@ -202,4 +190,10 @@ const deleteEgg = (userid, eggName) => {
             window.location.reload(true)
             console.log(data)
         })
+}
+
+function randomEgg(candyArr) {
+    for (let i = 0; i < candyArr.length; i++) {
+        document.getElementById(candyArr[i]).value = Math.floor(Math.random() * 25) + 1
+    }
 }
