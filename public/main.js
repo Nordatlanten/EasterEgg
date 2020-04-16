@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('offers', data => {
         let item = document.createElement('li')
 
-        item.appendChild(document.createTextNode(`Erbjudande av ${data.producer}: ${data.newOffer}`))
+        item.appendChild(document.createTextNode(`Nytt erbjudande från ${data.producer}: ${data.newOffer}`))
         offerMessageList.appendChild(item)
     })
 })

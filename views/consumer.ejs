@@ -8,20 +8,29 @@
         <script src="/socket.io/socket.io.js"></script>
     </head>
     <body>
-        <div id="mainBox">
-            <div id="upperRow">
-            </div>
-          
-        </div>
+      <div>
+<div> <h1 style="text-align: center;">Välkommen till Godisbutiken!</h1></div>
+
         <div>
-          <h1>Välkommen till Godisbutiken!</h1>
+          <h2>Nya erbjudanden!</h2>
+          <div>
+            <ol class="offerMessageList">
+        
+            </ol>
+             
+          </div>
         </div>
+                
       </div>
+
+         
+
+      
 
       <div id="mainRow">
         <div id="candyList">
-          <h2>Äggnamn:</h2>
-          <input type="text" id="eggname" placeholder="Skriv äggnamn här..." />
+          <h2>Godislistan</h2>
+          <div><span>Äggnamn:</span>  <input style="width: 30%; margin: 0 1%;" type="text" id="eggname" placeholder="Skriv äggnamn här..." /></div>
           <div id="sortingRow">
             <span>Sortera efter:</span>
             <span class="sorting"><a href="?sort=candyname">namn</a></span>
@@ -72,46 +81,50 @@
             </div>
 
             <% } %>
-            <button onclick="randomEgg(<%= JSON.stringify(currentCandies) %>)">Slumpa ägg</button>
+            <button class="yellowButton" onclick="randomEgg(<%= JSON.stringify(currentCandies) %>)">Slumpa ägg</button>
           </div>
         </div>
 
         <div id="eggWindow">
-          <h2>Ditt ägg: <span id="nameOfEgg"></span></h2>
+          <h2>Ditt ägg <span id="nameOfEgg"></span></h2>
           <ul id="egglist"></ul>
-          <p>Totalt pris: <span id="price"></span></p>
+          <p style="font-size: 1.5rem;">Totalt pris: <span id="price"></span></p>
           <button onclick="postEgg('<%=e%>')" class="greenButton">
             Spara ägg
           </button>
         </div>
-        <div id="newEggBox" class="blackBorder">
-          <h2>Dina sparade ägg:</h2>
-          <% let eggNames = Object.keys(d) %>
-          <% if(d[eggNames[0]] != undefined){ %>
-            Inloggad som: <%= e %>
-        <% } else{ %>  
-            <p><%= e %> är inte skapad ännu</p>
-        <% } %>
-
-          <% for(let i=0; i < eggNames.length; i++) {%>
-            <h3><%= eggNames[i] %> <button onclick="deleteEgg('<%=e%>', '<%=eggNames[i]%>')">Ta bort</button></h3>
-            
-            <% for(let n=0; n < d[eggNames[i]].length; n++) {%>
-                <p><%= d[eggNames[i]][n].name %>, <%= d[eggNames[i]][n].amount %>g </p>
-              <% } %>
-            <% } %>
-          </div>
-      </div>
+      
 
     </div>
 
-        <h2>Nya erbjudanden!</h2>
-        <div>
-          <ol class="offerMessageList">
+    <div id="newEggBox" class="blackBorder">
+      <h2>Dina sparade ägg:</h2>
+      <% let eggNames = Object.keys(d) %>
+      <% if(d[eggNames[0]] != undefined){ %>
+        Inloggad som: <%= e %>
+    <% } else{ %>  
+        <p><%= e %> är inte skapad ännu</p>
+    <% } %>
 
-          </ol>
-           
-        </div>
+    <div id="savedEggList">
+      
+        <% for(let i=0; i < eggNames.length; i++) {%>
+          <div class="savedEgg">
+          <h3><%= eggNames[i] %> <button class="redButton" onclick="deleteEgg('<%=e%>', '<%=eggNames[i]%>')">Ta bort</button></h3>
+          
+          <% for(let n=0; n < d[eggNames[i]].length; n++) {%>
+              <p><%= d[eggNames[i]][n].name %>, <%= d[eggNames[i]][n].amount %>g </p>
+            <% } %>
+          </div>
+          <% } %>
+        
+      
+     
+    </div>
+    
+      </div>
+  </div>
+
 
         <script src="../main.js"></script>
     </body>
