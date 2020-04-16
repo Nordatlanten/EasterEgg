@@ -6,6 +6,7 @@ const pool = require('../pool.js')
 
 const consumer = express.Router()
 
+// Våra kredentialer finns i variabel pw.
 const pw = require('../pw.js')
 
 const uri = pw.mdbConnect
@@ -18,53 +19,22 @@ client.connect(err => {
     db = client.db('candydb').collection('producers')
 })
 
-//
+// Route för att radera sparade ägg
+consumer.route('/eggs').delete((req, res) => {
+    let query = `DELETE FROM addedCandy WHERE eggName = ? AND userid = ?`
+    const deleteData = [req.body.eggName, req.body.userid]
+    pool((err, connection) => {
+        connection.query(query, deleteData, (err, result, fields) => {
+            connection.release()
 
-// Behövs koden nedan?
-consumer
-    .route('/eggs')
-    .get((req, res) => {
-        let query = `SELECT * FROM eggs`
+            if (err) throw err
 
-        pool((err, connection) => {
-            connection.query(query, (err, result, fields) => {
-                connection.release()
-
-                if (err) throw err
-
-                res.send(result)
-            })
+            res.send(result)
         })
     })
-    .post((req, res) => {
-        let query = `INSERT INTO eggs (name) VALUES (?)`
-        let values = [req.body.eggName]
-        console.log(req.body.eggName)
-        pool((err, connection) => {
-            connection.query(query, values, (err, result, fields) => {
-                connection.release()
+})
 
-                if (err) throw err
-
-                res.send(result)
-            })
-        })
-    })
-    .delete((req, res) => {
-        let query = `DELETE FROM addedCandy WHERE eggName = ? AND userid = ?`
-        const deleteData = [req.body.eggName, req.body.userid]
-        pool((err, connection) => {
-            connection.query(query, deleteData, (err, result, fields) => {
-                connection.release()
-
-                if (err) throw err
-
-                res.send(result)
-            })
-        })
-    })
-
-// Route som hämtar godis till konsumentsidan.
+// Route som hämtar godis och ägg till konsumentsidan.
 consumer
     .route('/consumer/:userid')
 
@@ -74,6 +44,7 @@ consumer
 
         let pipeline = [{ $unwind: '$products' }]
 
+        // Filtrera eller sortera produkter
         if (sortBy) {
             if (sortBy == 'candyname') {
                 pipeline = [{ $unwind: '$products' }, { $sort: { 'products.name': 1 } }]
@@ -102,6 +73,8 @@ consumer
                 connection.query(query, userid, (err, result, fields) => {
                     connection.release()
                     if (err) throw err
+
+                    // Skapar ett objekt från result där objektnycklarna är äggnamn och värdena är arrayer med det tillhörande godiset
                     const egg = {}
                     for (let n = 0; n < result.length; n++) {
                         if (egg[result[n].eggName] === undefined) {

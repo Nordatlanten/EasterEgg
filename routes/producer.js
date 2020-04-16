@@ -2,13 +2,9 @@ const express = require('express')
 
 const producer = express.Router()
 const { MongoClient } = require('mongodb')
-const pool = require('../pool.js')
 
 // Våra kredentialer finns i variabel pw.
 const pw = require('../pw.js')
-
-// Användares kredentialer finns i variabel credentials
-const credentials = require('../credentials')
 
 const uri = pw.mdbConnect
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -20,6 +16,7 @@ client.connect(err => {
     db = client.db('candydb').collection('producers')
 })
 
+// Hämtar producent efter inlogg, postar nya produkter till producent.
 producer
     .route('/producer/:producer')
     .get((req, res) => {
@@ -55,6 +52,7 @@ producer
         )
     })
 
+// Tar bort produkt på producentsida, fyller på lagerstatus på producentsida.
 producer
     .route('/producer')
     .delete((req, res) => {
@@ -85,6 +83,7 @@ producer
         )
     })
 
+// Minskar lagret när en konsument lägger godis i sitt påskägg
 producer.route('/producerstock').put((req, res) => {
     const { clickedProduct } = req.body
     const amountToDecrease = parseInt(req.body.amountToDecrease)

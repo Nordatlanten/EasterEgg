@@ -58,7 +58,12 @@
       <li class="p">
         <span><%= p.products[i].name %></span>
         <span>(<%= p.products[i].additional %>)</span>
+
+        <% if(p.products[i].stock < 100){ %>
+          <span style="color: red;">(<%= p.products[i].stock %>g i lager)</span>
+      <% } else{ %>  
         <span>(<%= p.products[i].stock %>g i lager)</span>
+      <% } %>
 
         <button onclick="deleteProduct('<%= p.products[i].name%>', '<%= p.producer%>')">Ta bort</button>
           <input type="number" name="<%= p.products[i].name%>" required />

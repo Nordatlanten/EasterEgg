@@ -4,7 +4,6 @@ const admin = express.Router()
 const ObjectId = require('mongodb').ObjectID
 
 const { MongoClient } = require('mongodb')
-const pool = require('../pool.js')
 
 const pw = require('../pw.js')
 
@@ -18,22 +17,7 @@ client.connect(err => {
     db = client.db('candydb').collection('producers')
 })
 
-// Bara ett test för sql. Visar 3 leverantörer.
-
-admin.route('/sqltest').get((req, res) => {
-    let query = `SELECT * FROM Producers`
-
-    pool((err, connection) => {
-        connection.query(query, (err, result, fields) => {
-            connection.release()
-
-            if (err) throw err
-
-            res.send(result)
-        })
-    })
-})
-
+// Route för att lägga till och ta bort leverantörer.
 admin
     .route('/admin')
     .get((req, res) => {
